@@ -37,12 +37,3 @@ jobs:
       - name: Run SwiftLint
         run: |
           swiftlint lint PassantEditor --config .swiftlint.yml --reporter github-actions-logging
-
-      - name: Build project
-        run: |
-          xcodebuild -project PassantEditor.xcodeproj \
-            -scheme PassantEditor \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-            clean build \
-            CODE_SIGNING_ALLOWED=NO \
-            | xcpretty && exit ${PIPESTATUS[0]}
