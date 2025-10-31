@@ -96,8 +96,35 @@ struct NoteRowView: View {
     }
 }
 
-#Preview {
+#Preview("Note List") {
     NoteListView()
         .modelContainer(for: Note.self, inMemory: true)
         .preferredColorScheme(.dark)
+}
+
+#Preview("Note Row States") {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Note.self, configurations: config)
+
+    let noteWithContent = Note(title: "My Favorite Places", content: "A collection of amazing spots in Seattle")
+    let noteEmpty = Note(title: "Untitled Note", content: "")
+    let noteLongContent = Note(
+        title: "Best Coffee Shops",
+        content: """
+        This is a longer note with more content to show how the preview handles text truncation. \
+        It should show an ellipsis after two lines.
+        """
+    )
+
+    container.mainContext.insert(noteWithContent)
+    container.mainContext.insert(noteEmpty)
+    container.mainContext.insert(noteLongContent)
+
+    return List {
+        NoteRowView(note: noteWithContent)
+        NoteRowView(note: noteEmpty)
+        NoteRowView(note: noteLongContent)
+    }
+    .modelContainer(container)
+    .preferredColorScheme(.dark)
 }

@@ -167,8 +167,14 @@ struct NewLocationView: View {
     }
 }
 
-#Preview {
+#Preview("Location Picker") {
     LocationPickerView { _ in }
+        .modelContainer(for: Location.self, inMemory: true)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("New Location Sheet") {
+    NewLocationView { _ in }
         .modelContainer(for: Location.self, inMemory: true)
         .preferredColorScheme(.dark)
 }

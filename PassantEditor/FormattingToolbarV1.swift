@@ -117,12 +117,31 @@ struct FormatButton: View {
     }
 }
 
-#Preview {
+#Preview("Toolbar") {
     VStack {
         FormattingToolbarV1(
             editableText: nil,
             showingLocationPicker: .constant(false)
         )
+    }
+    .padding()
+    .background(ThemeColors.background)
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Format Button States") {
+    VStack(spacing: 20) {
+        HStack(spacing: 12) {
+            FormatButton(icon: "bold", isActive: false) {}
+            FormatButton(icon: "italic", isActive: false) {}
+            FormatButton(icon: "underline", isActive: false) {}
+        }
+
+        HStack(spacing: 12) {
+            FormatButton(icon: "bold", isActive: true) {}
+            FormatButton(icon: "italic", isActive: true) {}
+            FormatButton(icon: "underline", isActive: true) {}
+        }
     }
     .padding()
     .background(ThemeColors.background)
