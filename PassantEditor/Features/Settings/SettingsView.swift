@@ -23,8 +23,9 @@ struct SettingsView: View {
 
                         Picker("Toolbar Version", selection: $toolbarVersion) {
                             Text("Simple").tag(1)
-                            Text("Grouped").tag(2)
-                            Text("Compact").tag(3)
+                            Text("Compact").tag(2)
+                            Text("Contextual").tag(3)
+                            Text("Segmented").tag(4)
                         }
                         .pickerStyle(.segmented)
 
@@ -39,26 +40,40 @@ struct SettingsView: View {
 
                 Section {
                     VStack(alignment: .leading, spacing: Theme.smallSpacing) {
-                        Text("Version 1: Simple")
+                        Text("Simple")
                             .font(.subheadline)
                             .fontWeight(.medium)
                         Text("Horizontal scrolling toolbar with all formatting options visible as icons.")
                             .font(.caption)
                             .foregroundColor(ThemeColors.secondaryLabel)
 
-                        Text("Version 2: Grouped")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .padding(.top, Theme.smallSpacing)
-                        Text("Formatting options organized into visual groups (Style, Heading, Lists, Location).")
-                            .font(.caption)
-                            .foregroundColor(ThemeColors.secondaryLabel)
-
-                        Text("Version 3: Compact")
+                        Text("Compact")
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .padding(.top, Theme.smallSpacing)
                         Text("Most common actions visible, with less-used options in an overflow menu.")
+                            .font(.caption)
+                            .foregroundColor(ThemeColors.secondaryLabel)
+
+                        Text("Contextual")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .padding(.top, Theme.smallSpacing)
+                        Text("""
+                            Shows different options based on context - formatting when text is selected, \
+                            structure options at new paragraphs.
+                            """)
+                            .font(.caption)
+                            .foregroundColor(ThemeColors.secondaryLabel)
+
+                        Text("Segmented")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .padding(.top, Theme.smallSpacing)
+                        Text("""
+                            Tabs to switch between Text, Structure, and Insert categories for organized \
+                            access to all options.
+                            """)
                             .font(.caption)
                             .foregroundColor(ThemeColors.secondaryLabel)
                     }
@@ -89,7 +104,6 @@ struct SettingsView: View {
                     Button("Done") {
                         dismiss()
                     }
-                    .buttonStyle(.glass)
                 }
             }
             .alert("Reset Prototype Data?", isPresented: $showingResetAlert) {

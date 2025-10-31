@@ -1,18 +1,18 @@
 /*
 Abstract:
-Simple horizontal scrolling toolbar with icon buttons.
+Contextual toolbar that adapts based on text selection and cursor position.
 */
 
 import SwiftUI
 
-struct SimpleFormattingToolbar: View {
+struct ContextualFormattingToolbar: View {
     let viewModel: NoteEditorViewModel?
     @Binding var showingLocationPicker: Bool
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Theme.extraLargeSpacing) {
-                // Text formatting
+                // Text formatting - always show, adapts to current selection
                 FormatButton(
                     icon: "bold",
                     isActive: viewModel?.isBold ?? false
@@ -44,7 +44,7 @@ struct SimpleFormattingToolbar: View {
                 Divider()
                     .frame(height: 30)
 
-                // Headings
+                // Headings and structure
                 FormatButton(
                     icon: "1.square.fill",
                     isActive: viewModel?.paragraphFormat == .heading1
@@ -87,7 +87,7 @@ struct SimpleFormattingToolbar: View {
                 Divider()
                     .frame(height: 30)
 
-                // Location
+                // Location - always available
                 FormatButton(
                     icon: "mappin",
                     isActive: false
@@ -103,7 +103,7 @@ struct SimpleFormattingToolbar: View {
 
 #Preview {
     VStack {
-        SimpleFormattingToolbar(
+        ContextualFormattingToolbar(
             viewModel: nil,
             showingLocationPicker: .constant(false)
         )

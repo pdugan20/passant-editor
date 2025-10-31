@@ -13,7 +13,7 @@ struct CompactFormattingToolbar: View {
     var body: some View {
         HStack(spacing: Theme.spacing) {
             // Primary actions (always visible)
-            HStack(spacing: Theme.smallSpacing) {
+            HStack(spacing: Theme.extraLargeSpacing) {
                 FormatButton(icon: "bold", isActive: viewModel?.isBold ?? false) {
                     viewModel?.toggleBold()
                 }
@@ -26,7 +26,7 @@ struct CompactFormattingToolbar: View {
                     // TODO: Implement list formatting
                 }
 
-                FormatButton(icon: "mappin.circle.fill", isActive: false) {
+                FormatButton(icon: "mappin", isActive: false) {
                     showingLocationPicker = true
                 }
             }
@@ -52,19 +52,19 @@ struct CompactFormattingToolbar: View {
                 Button {
                     viewModel?.paragraphFormat = .heading1
                 } label: {
-                    Label("Heading 1", systemImage: "h1.square")
+                    Label("Heading 1", systemImage: "1.square.fill")
                 }
 
                 Button {
                     viewModel?.paragraphFormat = .heading2
                 } label: {
-                    Label("Heading 2", systemImage: "h2.square")
+                    Label("Heading 2", systemImage: "2.square.fill")
                 }
 
                 Button {
                     viewModel?.paragraphFormat = .heading3
                 } label: {
-                    Label("Heading 3", systemImage: "h3.square")
+                    Label("Heading 3", systemImage: "3.square.fill")
                 }
 
                 Divider()
@@ -75,7 +75,7 @@ struct CompactFormattingToolbar: View {
                     Label("Numbered List", systemImage: "list.number")
                 }
             } label: {
-                Image(systemName: "ellipsis.circle.fill")
+                Image(systemName: "ellipsis.circle")
                     .font(.system(size: 18, weight: .medium))
             }
             .toolbarButtonStyle(isActive: showingMoreOptions)

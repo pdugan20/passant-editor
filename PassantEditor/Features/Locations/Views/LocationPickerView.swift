@@ -25,69 +25,67 @@ struct LocationPickerView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // Search bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(ThemeColors.secondaryLabel)
-
-                    TextField("Search locations...", text: $searchText)
-                        .textFieldStyle(.plain)
-                }
-                .padding(Theme.spacing)
-                .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: Theme.cornerRadius))
-                .padding(Theme.spacing)
-
-                // Locations list
-                List {
-                    ForEach(filteredLocations) { location in
-                        Button {
-                            onSelect(location)
-                            dismiss()
-                        } label: {
-                            HStack {
-                                Image(systemName: "mappin.circle.fill")
-                                    .foregroundColor(ThemeColors.locationPillText)
-
+            List {
+                ForEach(filteredLocations) { location in
+                    Button {
+                        onSelect(location)
+                        dismiss()
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
                                 Text(location.name)
                                     .foregroundColor(ThemeColors.label)
 
-                                Spacer()
+                                if let latitude = location.latitude, let longitude = location.longitude {
+                                    Text("lat: \(String(format: "%.2f", latitude)), " +
+                                         "long: \(String(format: "%.2f", longitude))")
+                                        .font(.caption)
+                                        .foregroundColor(ThemeColors.secondaryLabel)
+                                } else {
+                                    Text("No location data")
+                                        .font(.caption)
+                                        .foregroundColor(ThemeColors.secondaryLabel)
+                                }
                             }
-                            .padding(.vertical, Theme.smallSpacing)
+
+                            Spacer()
                         }
-                    }
-
-                    // Quick add from search
-                    if !searchText.isEmpty &&
-                       !filteredLocations.contains(where: { $0.name.lowercased() == searchText.lowercased() }) {
-                        Button {
-                            addNewLocation(name: searchText)
-                        } label: {
-                            HStack {
-                                Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(ThemeColors.primary)
-
-                                Text("Add \"\(searchText)\"")
-                                    .foregroundColor(ThemeColors.primary)
-
-                                Spacer()
-                            }
-                            .padding(.vertical, Theme.smallSpacing)
-                        }
+                        .padding(.vertical, Theme.smallSpacing)
                     }
                 }
-                .listStyle(.plain)
+
+                // Quick add from search
+                if !searchText.isEmpty &&
+                   !filteredLocations.contains(where: { $0.name.lowercased() == searchText.lowercased() }) {
+                    Button {
+                        addNewLocation(name: searchText)
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(ThemeColors.primary)
+
+                            Text("Add \"\(searchText)\"")
+                                .foregroundColor(ThemeColors.primary)
+
+                            Spacer()
+                        }
+                        .padding(.vertical, Theme.smallSpacing)
+                    }
+                }
             }
+            .listStyle(.plain)
+            .searchable(text: $searchText, prompt: "Search locations")
+            .searchPresentationToolbarBehavior(.avoidHidingContent)
             .background(ThemeColors.background)
             .navigationTitle("Select Location")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
-                    .buttonStyle(.glass)
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -96,7 +94,6 @@ struct LocationPickerView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-                    .buttonStyle(.glass)
                 }
             }
             .sheet(isPresented: $showingNewLocationSheet) {
@@ -143,17 +140,17 @@ struct NewLocationView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
-                    .buttonStyle(.glass)
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add") {
                         addLocation()
                     }
-                    .buttonStyle(.glass)
                     .disabled(locationName.isEmpty)
                 }
             }

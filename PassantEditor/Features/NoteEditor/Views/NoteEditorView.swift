@@ -73,12 +73,17 @@ struct NoteEditorView: View {
                 showingLocationPicker: $showingLocationPicker
             )
         case 2:
-            GroupedFormattingToolbar(
+            CompactFormattingToolbar(
                 viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )
         case 3:
-            CompactFormattingToolbar(
+            ContextualFormattingToolbar(
+                viewModel: viewModel,
+                showingLocationPicker: $showingLocationPicker
+            )
+        case 4:
+            SegmentedFormattingToolbar(
                 viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )

@@ -10,6 +10,7 @@ enum Theme {
     static let smallSpacing: CGFloat = 8
     static let spacing: CGFloat = 16
     static let largeSpacing: CGFloat = 24
+    static let extraLargeSpacing: CGFloat = 32
 
     // MARK: - Corner Radius
     static let smallCornerRadius: CGFloat = 8
@@ -71,14 +72,7 @@ struct ToolbarButtonStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 16, weight: .medium))
             .foregroundColor(isActive ? ThemeColors.primary : ThemeColors.label)
-            .padding(Theme.smallSpacing)
-            .frame(width: 44, height: 44)
-            .glassEffect(
-                isActive ? .regular.interactive().tint(.blue) : .regular.interactive(),
-                in: RoundedRectangle(cornerRadius: Theme.smallCornerRadius)
-            )
     }
 }
 

@@ -29,7 +29,6 @@ struct NoteListView: View {
                     } label: {
                         Image(systemName: "gearshape.fill")
                     }
-                    .buttonStyle(.glass)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -37,7 +36,6 @@ struct NoteListView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-                    .buttonStyle(.glass)
                 }
             }
             .sheet(isPresented: $showingSettings) {
