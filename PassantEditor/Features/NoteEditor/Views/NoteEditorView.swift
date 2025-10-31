@@ -14,35 +14,40 @@ struct NoteEditorView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Title field
-            TextField("Title", text: $note.title, axis: .vertical)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .lineLimit(1...5)
-                .padding(.horizontal, Theme.spacing)
-                .padding(.top, Theme.spacing)
+        ScrollView {
+            VStack(spacing: 0) {
+                // Title field
+                TextField("Title", text: $note.title, axis: .vertical)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .lineLimit(1...5)
+                    .padding(.horizontal, Theme.spacing)
+                    .padding(.top, Theme.spacing)
 
-            Divider()
-                .padding(.vertical, 4)
+                Divider()
+                    .padding(.vertical, 4)
 
-            // Content editor
-            if let viewModel = viewModel {
-                TextEditor(
-                    text: Binding(
-                        get: { viewModel.text },
-                        set: { viewModel.text = $0 }
-                    ),
-                    selection: Binding(
-                        get: { viewModel.selection },
-                        set: { viewModel.selection = $0 }
+                // Content editor
+                if let viewModel = viewModel {
+                    TextEditor(
+                        text: Binding(
+                            get: { viewModel.text },
+                            set: { viewModel.text = $0 }
+                        ),
+                        selection: Binding(
+                            get: { viewModel.selection },
+                            set: { viewModel.selection = $0 }
+                        )
                     )
-                )
-                .font(.body)
-                .scrollContentBackground(.hidden)
-                .padding(Theme.spacing)
+                    .font(.body)
+                    .scrollContentBackground(.hidden)
+                    .scrollDisabled(true)
+                    .frame(minHeight: 500)
+                    .padding(Theme.spacing)
+                }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .background(ThemeColors.background)
         .attributedTextFormattingDefinition(
             NoteFormattingDefinition(
@@ -53,6 +58,7 @@ struct NoteEditorView: View {
             ToolbarItemGroup(placement: .keyboard) {
                 toolbarContent
             }
+            .sharedBackgroundVisibility(.hidden)
         }
         .onAppear {
             if viewModel == nil {
@@ -69,37 +75,44 @@ struct NoteEditorView: View {
 
     @ViewBuilder
     private var toolbarContent: some View {
-        Group {
-            switch toolbarVersion {
-            case 1:
-                SimpleFormattingToolbar(
-                    viewModel: viewModel,
-                    showingLocationPicker: $showingLocationPicker
-                )
-            case 2:
-                CompactFormattingToolbar(
-                    viewModel: viewModel,
-                    showingLocationPicker: $showingLocationPicker
-                )
-            case 3:
-                ContextualFormattingToolbar(
-                    viewModel: viewModel,
-                    showingLocationPicker: $showingLocationPicker
-                )
-            case 4:
-                SegmentedFormattingToolbar(
-                    viewModel: viewModel,
-                    showingLocationPicker: $showingLocationPicker
-                )
-            default:
-                SimpleFormattingToolbar(
-                    viewModel: viewModel,
-                    showingLocationPicker: $showingLocationPicker
-                )
+        ZStack {
+            Rectangle()
+                .fill(.clear)
+                .glassEffect()
+                .frame(maxWidth: .infinity)
+                .edgesIgnoringSafeArea(.horizontal)
+
+            Group {
+                switch toolbarVersion {
+                case 1:
+                    SimpleFormattingToolbar(
+                        viewModel: viewModel,
+                        showingLocationPicker: $showingLocationPicker
+                    )
+                case 2:
+                    CompactFormattingToolbar(
+                        viewModel: viewModel,
+                        showingLocationPicker: $showingLocationPicker
+                    )
+                case 3:
+                    ContextualFormattingToolbar(
+                        viewModel: viewModel,
+                        showingLocationPicker: $showingLocationPicker
+                    )
+                case 4:
+                    SegmentedFormattingToolbar(
+                        viewModel: viewModel,
+                        showingLocationPicker: $showingLocationPicker
+                    )
+                default:
+                    SimpleFormattingToolbar(
+                        viewModel: viewModel,
+                        showingLocationPicker: $showingLocationPicker
+                    )
+                }
             }
         }
-        .padding(.bottom, Theme.spacing)
-        .padding(.horizontal, 8)
+        .padding(.bottom, 32)
     }
 }
 

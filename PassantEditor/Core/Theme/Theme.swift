@@ -34,11 +34,11 @@ enum ThemeColors {
     static let secondaryLabel = Color(uiColor: .secondaryLabel)
     static let tertiaryLabel = Color(uiColor: .tertiaryLabel)
 
-    static let primary = Color.blue
-    static let accent = Color.blue
+    static let primary = Color.red
+    static let accent = Color.red
 
-    static let locationPill = Color.blue.opacity(0.2)
-    static let locationPillText = Color.blue
+    static let locationPill = Color.red.opacity(0.2)
+    static let locationPillText = Color.red
 
     static let glassStroke = Color.white.opacity(0.2)
 }
@@ -72,7 +72,14 @@ struct ToolbarButtonStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(isActive ? ThemeColors.primary : ThemeColors.label)
+            .foregroundColor(ThemeColors.label)
+            .padding(6)
+            .background {
+                if isActive {
+                    Circle()
+                        .fill(ThemeColors.primary)
+                }
+            }
     }
 }
 

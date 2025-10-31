@@ -100,6 +100,8 @@ struct SimpleFormattingToolbar: View {
             }
             .padding(.horizontal, 32)
         }
+        .scrollContentBackground(.hidden)
+        .contentMargins(.horizontal, 0)
         .frame(height: 58)
     }
 }
