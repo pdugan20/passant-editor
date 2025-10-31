@@ -98,9 +98,8 @@ struct SimpleFormattingToolbar: View {
                     showingLocationPicker = true
                 }
             }
-            .padding(.horizontal, Theme.smallSpacing)
+            .padding(.horizontal, 32)
         }
-        .padding(.bottom, Theme.smallSpacing)
         .frame(height: 58)
     }
 }

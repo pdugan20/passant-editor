@@ -19,7 +19,7 @@ struct SegmentedFormattingToolbar: View {
                 Text("Insert").tag(2)
             }
             .pickerStyle(.segmented)
-            .padding(.horizontal, Theme.smallSpacing)
+            .padding(.horizontal, 32)
             .padding(.vertical, Theme.smallSpacing)
 
             // Toolbar content based on selected tab
@@ -113,8 +113,7 @@ struct SegmentedFormattingToolbar: View {
                     EmptyView()
                 }
             }
-            .padding(.horizontal, Theme.smallSpacing)
-            .padding(.bottom, Theme.smallSpacing)
+            .padding(.horizontal, 32)
             .frame(height: 50)
         }
     }

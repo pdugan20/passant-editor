@@ -16,9 +16,10 @@ struct NoteEditorView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Title field
-            TextField("Title", text: $note.title)
+            TextField("Title", text: $note.title, axis: .vertical)
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .lineLimit(1...5)
                 .padding(.horizontal, Theme.spacing)
                 .padding(.top, Theme.spacing)
 
@@ -27,13 +28,16 @@ struct NoteEditorView: View {
 
             // Content editor
             if let viewModel = viewModel {
-                TextEditor(text: Binding(
-                    get: { viewModel.text },
-                    set: { viewModel.text = $0 }
-                ), selection: Binding(
-                    get: { viewModel.selection },
-                    set: { viewModel.selection = $0 }
-                ))
+                TextEditor(
+                    text: Binding(
+                        get: { viewModel.text },
+                        set: { viewModel.text = $0 }
+                    ),
+                    selection: Binding(
+                        get: { viewModel.selection },
+                        set: { viewModel.selection = $0 }
+                    )
+                )
                 .font(.body)
                 .scrollContentBackground(.hidden)
                 .padding(Theme.spacing)
@@ -95,6 +99,7 @@ struct NoteEditorView: View {
             }
         }
         .padding(.bottom, Theme.spacing)
+        .padding(.horizontal, 8)
     }
 }
 

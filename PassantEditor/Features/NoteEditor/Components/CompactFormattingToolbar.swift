@@ -92,8 +92,7 @@ struct CompactFormattingToolbar: View {
             }
             .toolbarButtonStyle(isActive: showingMoreOptions)
         }
-        .padding(.horizontal, Theme.smallSpacing)
-        .padding(.bottom, Theme.smallSpacing)
+        .padding(.horizontal, 32)
         .frame(height: 58)
     }
 }
