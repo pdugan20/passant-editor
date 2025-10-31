@@ -27,7 +27,7 @@ struct NoteListView: View {
                     Button {
                         showingSettings = true
                     } label: {
-                        Image(systemName: "gear")
+                        Image(systemName: "gearshape.fill")
                     }
                     .buttonStyle(.glass)
                 }
@@ -38,10 +38,6 @@ struct NoteListView: View {
                         Image(systemName: "plus")
                     }
                     .buttonStyle(.glass)
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                        .buttonStyle(.glass)
                 }
             }
             .sheet(isPresented: $showingSettings) {

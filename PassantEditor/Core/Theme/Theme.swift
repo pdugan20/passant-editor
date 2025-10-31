@@ -73,6 +73,7 @@ struct ToolbarButtonStyle: ViewModifier {
         content
             .font(.system(size: 16, weight: .medium))
             .foregroundColor(isActive ? ThemeColors.primary : ThemeColors.label)
+            .padding(Theme.smallSpacing)
             .frame(width: 44, height: 44)
             .glassEffect(
                 isActive ? .regular.interactive().tint(.blue) : .regular.interactive(),

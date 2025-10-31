@@ -38,28 +38,31 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Text("Version 1: Simple")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    Text("Horizontal scrolling toolbar with all formatting options visible as icons.")
-                        .font(.caption)
-                        .foregroundColor(ThemeColors.secondaryLabel)
+                    VStack(alignment: .leading, spacing: Theme.smallSpacing) {
+                        Text("Version 1: Simple")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                        Text("Horizontal scrolling toolbar with all formatting options visible as icons.")
+                            .font(.caption)
+                            .foregroundColor(ThemeColors.secondaryLabel)
 
-                    Text("Version 2: Grouped")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.top, Theme.smallSpacing)
-                    Text("Formatting options organized into visual groups (Style, Heading, Lists, Location).")
-                        .font(.caption)
-                        .foregroundColor(ThemeColors.secondaryLabel)
+                        Text("Version 2: Grouped")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .padding(.top, Theme.smallSpacing)
+                        Text("Formatting options organized into visual groups (Style, Heading, Lists, Location).")
+                            .font(.caption)
+                            .foregroundColor(ThemeColors.secondaryLabel)
 
-                    Text("Version 3: Compact")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.top, Theme.smallSpacing)
-                    Text("Most common actions visible, with less-used options in an overflow menu.")
-                        .font(.caption)
-                        .foregroundColor(ThemeColors.secondaryLabel)
+                        Text("Version 3: Compact")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .padding(.top, Theme.smallSpacing)
+                        Text("Most common actions visible, with less-used options in an overflow menu.")
+                            .font(.caption)
+                            .foregroundColor(ThemeColors.secondaryLabel)
+                    }
+                    .padding(.vertical, Theme.smallSpacing)
                 } header: {
                     Text("About Toolbar Versions")
                 }
