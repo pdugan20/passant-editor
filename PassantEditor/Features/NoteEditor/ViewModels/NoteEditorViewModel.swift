@@ -170,5 +170,10 @@ extension NoteEditorViewModel {
         text.append(AttributedString(" "))
         text.append(locationText)
         text.append(AttributedString(" "))
+
+        // Add location to note if not already present
+        if !model.locations.contains(where: { $0.id == location.id }) {
+            model.locations.append(location)
+        }
     }
 }

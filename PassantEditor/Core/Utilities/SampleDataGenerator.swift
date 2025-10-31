@@ -166,7 +166,7 @@ enum SampleDataGenerator {
         let note = Note(
             title: "Favorite Dive Bars",
             content: content,
-            locations: Array(locations.values)
+            locations: [locations["Shorty's"], locations["The Croc"], locations["Unicorn"]].compactMap { $0 }
         )
 
         return note
@@ -221,7 +221,7 @@ enum SampleDataGenerator {
         let note = Note(
             title: "Seattle's Best Pizza",
             content: content,
-            locations: Array(locations.values)
+            locations: [locations["Delancey"], locations["Serious Pie"], locations["Dino's"]].compactMap { $0 }
         )
 
         return note
@@ -283,7 +283,7 @@ enum SampleDataGenerator {
         let note = Note(
             title: "Seattle Coffee Guide",
             content: content,
-            locations: Array(locations.values)
+            locations: [locations["Victrola Coffee"], locations["Analog Coffee"], locations["Elm Coffee Roasters"]].compactMap { $0 }
         )
 
         return note
