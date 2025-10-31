@@ -88,10 +88,11 @@ enum SampleDataGenerator {
         try? context.delete(model: Note.self)
         try? context.delete(model: Location.self)
 
-        // Create locations
+        // Create and save locations first to get stable IDs
         let locations = createLocations(context: context)
+        try? context.save()
 
-        // Create notes
+        // Create notes (now location IDs are stable)
         let notes = [
             createDiveBarsNote(locations: locations),
             createPizzaNote(locations: locations),
@@ -145,6 +146,7 @@ enum SampleDataGenerator {
             var item2 = AttributedString("• ")
             var locationText = AttributedString("The Croc")
             locationText.location = croc.id
+            item2.append(locationText)
             item2.append(AttributedString(" - Historic music venue with cheap drinks\n"))
             content.append(item2)
         }

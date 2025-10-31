@@ -10,6 +10,7 @@ struct NoteEditorView: View {
     @Bindable var note: Note
     @State private var viewModel: NoteEditorViewModel?
     @State private var showingLocationPicker = false
+    @State private var locationIDs: Set<Location.ID> = []
     @AppStorage("toolbarVersion") private var toolbarVersion: Int = 1
     @Environment(\.modelContext) private var modelContext
 
@@ -51,7 +52,7 @@ struct NoteEditorView: View {
         .background(ThemeColors.background)
         .attributedTextFormattingDefinition(
             NoteFormattingDefinition(
-                locations: Set(note.locations.map { $0.id })
+                locations: locationIDs
             )
         )
         .toolbar {
@@ -64,6 +65,10 @@ struct NoteEditorView: View {
             if viewModel == nil {
                 viewModel = NoteEditorViewModel(note: note)
             }
+            locationIDs = Set(note.locations.map { $0.id })
+        }
+        .onChange(of: note.locations.map { $0.id }) { _, newIDs in
+            locationIDs = Set(newIDs)
         }
         .sheet(isPresented: $showingLocationPicker) {
             LocationPickerView { location in
