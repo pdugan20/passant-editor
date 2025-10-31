@@ -8,7 +8,7 @@ import SwiftUI
 
 struct NoteEditorView: View {
     @Bindable var note: Note
-    @State private var editableText: EditableNoteText?
+    @State private var viewModel: NoteEditorViewModel?
     @State private var showingLocationPicker = false
     @AppStorage("toolbarVersion") private var toolbarVersion: Int = 1
     @Environment(\.modelContext) private var modelContext
@@ -27,13 +27,13 @@ struct NoteEditorView: View {
                 .padding(.vertical, Theme.smallSpacing)
 
             // Content editor
-            if let editableText = editableText {
+            if let viewModel = viewModel {
                 TextEditor(text: Binding(
-                    get: { editableText.text },
-                    set: { editableText.text = $0 }
+                    get: { viewModel.text },
+                    set: { viewModel.text = $0 }
                 ), selection: Binding(
-                    get: { editableText.selection },
-                    set: { editableText.selection = $0 }
+                    get: { viewModel.selection },
+                    set: { viewModel.selection = $0 }
                 ))
                 .font(.body)
                 .scrollContentBackground(.hidden)
@@ -52,13 +52,13 @@ struct NoteEditorView: View {
             }
         }
         .onAppear {
-            if editableText == nil {
-                editableText = EditableNoteText(note: note)
+            if viewModel == nil {
+                viewModel = NoteEditorViewModel(note: note)
             }
         }
         .sheet(isPresented: $showingLocationPicker) {
             LocationPickerView { location in
-                editableText?.insertLocation(location)
+                viewModel?.insertLocation(location)
                 showingLocationPicker = false
             }
         }
@@ -68,23 +68,23 @@ struct NoteEditorView: View {
     private var toolbarContent: some View {
         switch toolbarVersion {
         case 1:
-            FormattingToolbarV1(
-                editableText: editableText,
+            SimpleFormattingToolbar(
+                viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )
         case 2:
-            FormattingToolbarV2(
-                editableText: editableText,
+            GroupedFormattingToolbar(
+                viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )
         case 3:
-            FormattingToolbarV3(
-                editableText: editableText,
+            CompactFormattingToolbar(
+                viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )
         default:
-            FormattingToolbarV1(
-                editableText: editableText,
+            SimpleFormattingToolbar(
+                viewModel: viewModel,
                 showingLocationPicker: $showingLocationPicker
             )
         }

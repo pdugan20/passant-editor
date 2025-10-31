@@ -1,12 +1,12 @@
 /*
 Abstract:
-Version 1: Simple horizontal scrolling toolbar with icon buttons.
+Simple horizontal scrolling toolbar with icon buttons.
 */
 
 import SwiftUI
 
-struct FormattingToolbarV1: View {
-    let editableText: EditableNoteText?
+struct SimpleFormattingToolbar: View {
+    let viewModel: NoteEditorViewModel?
     @Binding var showingLocationPicker: Bool
 
     var body: some View {
@@ -15,30 +15,30 @@ struct FormattingToolbarV1: View {
                 // Text formatting
                 FormatButton(
                     icon: "bold",
-                    isActive: editableText?.isBold ?? false
+                    isActive: viewModel?.isBold ?? false
                 ) {
-                    editableText?.toggleBold()
+                    viewModel?.toggleBold()
                 }
 
                 FormatButton(
                     icon: "italic",
-                    isActive: editableText?.isItalic ?? false
+                    isActive: viewModel?.isItalic ?? false
                 ) {
-                    editableText?.toggleItalic()
+                    viewModel?.toggleItalic()
                 }
 
                 FormatButton(
                     icon: "underline",
-                    isActive: editableText?.isUnderline ?? false
+                    isActive: viewModel?.isUnderline ?? false
                 ) {
-                    editableText?.toggleUnderline()
+                    viewModel?.toggleUnderline()
                 }
 
                 FormatButton(
                     icon: "strikethrough",
-                    isActive: editableText?.isStrikethrough ?? false
+                    isActive: viewModel?.isStrikethrough ?? false
                 ) {
-                    editableText?.toggleStrikethrough()
+                    viewModel?.toggleStrikethrough()
                 }
 
                 Divider()
@@ -47,23 +47,23 @@ struct FormattingToolbarV1: View {
                 // Headings
                 FormatButton(
                     icon: "h1.square",
-                    isActive: editableText?.paragraphFormat == .heading1
+                    isActive: viewModel?.paragraphFormat == .heading1
                 ) {
-                    editableText?.paragraphFormat = .heading1
+                    viewModel?.paragraphFormat = .heading1
                 }
 
                 FormatButton(
                     icon: "h2.square",
-                    isActive: editableText?.paragraphFormat == .heading2
+                    isActive: viewModel?.paragraphFormat == .heading2
                 ) {
-                    editableText?.paragraphFormat = .heading2
+                    viewModel?.paragraphFormat = .heading2
                 }
 
                 FormatButton(
                     icon: "h3.square",
-                    isActive: editableText?.paragraphFormat == .heading3
+                    isActive: viewModel?.paragraphFormat == .heading3
                 ) {
-                    editableText?.paragraphFormat = .heading3
+                    viewModel?.paragraphFormat = .heading3
                 }
 
                 Divider()
@@ -101,47 +101,12 @@ struct FormattingToolbarV1: View {
     }
 }
 
-// MARK: - Format Button
-
-struct FormatButton: View {
-    let icon: String
-    let isActive: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: icon)
-                .font(.system(size: 18, weight: .medium))
-        }
-        .toolbarButtonStyle(isActive: isActive)
-    }
-}
-
-#Preview("Toolbar") {
+#Preview {
     VStack {
-        FormattingToolbarV1(
-            editableText: nil,
+        SimpleFormattingToolbar(
+            viewModel: nil,
             showingLocationPicker: .constant(false)
         )
-    }
-    .padding()
-    .background(ThemeColors.background)
-    .preferredColorScheme(.dark)
-}
-
-#Preview("Format Button States") {
-    VStack(spacing: 20) {
-        HStack(spacing: 12) {
-            FormatButton(icon: "bold", isActive: false) {}
-            FormatButton(icon: "italic", isActive: false) {}
-            FormatButton(icon: "underline", isActive: false) {}
-        }
-
-        HStack(spacing: 12) {
-            FormatButton(icon: "bold", isActive: true) {}
-            FormatButton(icon: "italic", isActive: true) {}
-            FormatButton(icon: "underline", isActive: true) {}
-        }
     }
     .padding()
     .background(ThemeColors.background)

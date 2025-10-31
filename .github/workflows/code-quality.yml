@@ -30,14 +30,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /opt/homebrew/Cellar/swiftlint
-          key: ${{ runner.os }}-swiftlint-${{ hashFiles('PassantEditor/.swiftlint.yml') }}
+          key: ${{ runner.os }}-swiftlint-${{ hashFiles('.swiftlint.yml') }}
           restore-keys: |
             ${{ runner.os }}-swiftlint-
 
       - name: Run SwiftLint
         run: |
-          cd PassantEditor
-          swiftlint lint . --config .swiftlint.yml --reporter github-actions-logging
+          swiftlint lint PassantEditor --config .swiftlint.yml --reporter github-actions-logging
 
       - name: Build project
         run: |

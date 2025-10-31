@@ -1,6 +1,6 @@
 /*
 Abstract:
-The view model for a note with editable content.
+View model for note editing with rich text formatting support.
 */
 
 import SwiftData
@@ -8,7 +8,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-final class EditableNoteText: Identifiable {
+final class NoteEditorViewModel: Identifiable {
     let model: Note
 
     var text: AttributedString {
@@ -44,7 +44,7 @@ final class EditableNoteText: Identifiable {
 
 // MARK: - Formatting Helpers
 
-extension EditableNoteText {
+extension NoteEditorViewModel {
     /// Check if current selection has bold formatting
     var isBold: Bool {
         let containers = selection.attributes(in: text)

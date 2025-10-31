@@ -1,12 +1,12 @@
 /*
 Abstract:
-Version 3: Compact toolbar with overflow menu for less-used options.
+Compact toolbar with overflow menu for less-used options.
 */
 
 import SwiftUI
 
-struct FormattingToolbarV3: View {
-    let editableText: EditableNoteText?
+struct CompactFormattingToolbar: View {
+    let viewModel: NoteEditorViewModel?
     @Binding var showingLocationPicker: Bool
     @State private var showingMoreOptions = false
 
@@ -14,12 +14,12 @@ struct FormattingToolbarV3: View {
         HStack(spacing: Theme.spacing) {
             // Primary actions (always visible)
             HStack(spacing: Theme.smallSpacing) {
-                FormatButton(icon: "bold", isActive: editableText?.isBold ?? false) {
-                    editableText?.toggleBold()
+                FormatButton(icon: "bold", isActive: viewModel?.isBold ?? false) {
+                    viewModel?.toggleBold()
                 }
 
-                FormatButton(icon: "italic", isActive: editableText?.isItalic ?? false) {
-                    editableText?.toggleItalic()
+                FormatButton(icon: "italic", isActive: viewModel?.isItalic ?? false) {
+                    viewModel?.toggleItalic()
                 }
 
                 FormatButton(icon: "list.bullet", isActive: false) {
@@ -36,13 +36,13 @@ struct FormattingToolbarV3: View {
             // More options menu
             Menu {
                 Button {
-                    editableText?.toggleUnderline()
+                    viewModel?.toggleUnderline()
                 } label: {
                     Label("Underline", systemImage: "underline")
                 }
 
                 Button {
-                    editableText?.toggleStrikethrough()
+                    viewModel?.toggleStrikethrough()
                 } label: {
                     Label("Strikethrough", systemImage: "strikethrough")
                 }
@@ -50,19 +50,19 @@ struct FormattingToolbarV3: View {
                 Divider()
 
                 Button {
-                    editableText?.paragraphFormat = .heading1
+                    viewModel?.paragraphFormat = .heading1
                 } label: {
                     Label("Heading 1", systemImage: "h1.square")
                 }
 
                 Button {
-                    editableText?.paragraphFormat = .heading2
+                    viewModel?.paragraphFormat = .heading2
                 } label: {
                     Label("Heading 2", systemImage: "h2.square")
                 }
 
                 Button {
-                    editableText?.paragraphFormat = .heading3
+                    viewModel?.paragraphFormat = .heading3
                 } label: {
                     Label("Heading 3", systemImage: "h3.square")
                 }
@@ -87,8 +87,8 @@ struct FormattingToolbarV3: View {
 
 #Preview {
     VStack {
-        FormattingToolbarV3(
-            editableText: nil,
+        CompactFormattingToolbar(
+            viewModel: nil,
             showingLocationPicker: .constant(false)
         )
     }

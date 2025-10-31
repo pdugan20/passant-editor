@@ -106,32 +106,19 @@ The pre-commit hooks will:
 
 ```
 PassantEditor/
-├── PassantEditor/
-│   ├── Models/
-│   │   ├── Note.swift                      # Note model with AttributedString content
-│   │   ├── Location.swift                  # Location model for place mentions
-│   │   ├── AttributedStringModel.swift     # SwiftData persistence for AttributedString
-│   │   ├── NoteAttributeScopes.swift       # Custom attribute definitions
-│   │   └── NoteFormattingDefinition.swift  # Formatting constraints
-│   ├── ViewModels/
-│   │   └── EditableNoteText.swift          # View model for note editing
-│   ├── Views/
-│   │   ├── NoteListView.swift              # Main list of notes
-│   │   ├── NoteEditorView.swift            # Rich text editor
-│   │   ├── LocationPickerView.swift        # Location selection sheet
-│   │   ├── SettingsView.swift              # App settings
-│   │   ├── FormattingToolbarV1.swift       # Simple toolbar
-│   │   ├── FormattingToolbarV2.swift       # Grouped toolbar
-│   │   └── FormattingToolbarV3.swift       # Compact toolbar
-│   ├── Themes/
-│   │   └── Theme.swift                     # Dark mode theme with Liquid Glass
-│   ├── SampleDataGenerator.swift           # Pre-populated notes
-│   └── PassantEditorApp.swift              # App entry point
-├── .swiftlint.yml                          # SwiftLint configuration
-├── .pre-commit-config.yaml                 # Pre-commit hooks config
-└── .github/
-    └── workflows/
-        └── code-quality.yml                # CI/CD workflow
+├── App/ - App entry point
+├── Core/
+│   ├── Models/ - SwiftData models (Note, Location, AttributedString)
+│   ├── Utilities/ - Sample data, attribute scopes, formatting definitions
+│   └── Theme/ - Liquid Glass theme and view modifiers
+├── Features/
+│   ├── NoteEditor/ - Rich text editing (views, view models, toolbars)
+│   ├── Locations/ - Location picker and management
+│   └── Settings/ - App settings
+├── Shared/Components/ - Reusable UI components
+├── .swiftlint.yml - Code quality rules
+├── .pre-commit-config.yaml - Git hooks
+└── .github/workflows/ - CI/CD automation
 ```
 
 ## Features in Detail

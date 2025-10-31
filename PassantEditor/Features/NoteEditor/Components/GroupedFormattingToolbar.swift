@@ -1,12 +1,12 @@
 /*
 Abstract:
-Version 2: Grouped sections with visual dividers.
+Grouped sections with visual dividers.
 */
 
 import SwiftUI
 
-struct FormattingToolbarV2: View {
-    let editableText: EditableNoteText?
+struct GroupedFormattingToolbar: View {
+    let viewModel: NoteEditorViewModel?
     @Binding var showingLocationPicker: Bool
 
     var body: some View {
@@ -19,20 +19,20 @@ struct FormattingToolbarV2: View {
                         .foregroundColor(ThemeColors.secondaryLabel)
 
                     HStack(spacing: Theme.smallSpacing) {
-                        FormatButton(icon: "bold", isActive: editableText?.isBold ?? false) {
-                            editableText?.toggleBold()
+                        FormatButton(icon: "bold", isActive: viewModel?.isBold ?? false) {
+                            viewModel?.toggleBold()
                         }
 
-                        FormatButton(icon: "italic", isActive: editableText?.isItalic ?? false) {
-                            editableText?.toggleItalic()
+                        FormatButton(icon: "italic", isActive: viewModel?.isItalic ?? false) {
+                            viewModel?.toggleItalic()
                         }
 
-                        FormatButton(icon: "underline", isActive: editableText?.isUnderline ?? false) {
-                            editableText?.toggleUnderline()
+                        FormatButton(icon: "underline", isActive: viewModel?.isUnderline ?? false) {
+                            viewModel?.toggleUnderline()
                         }
 
-                        FormatButton(icon: "strikethrough", isActive: editableText?.isStrikethrough ?? false) {
-                            editableText?.toggleStrikethrough()
+                        FormatButton(icon: "strikethrough", isActive: viewModel?.isStrikethrough ?? false) {
+                            viewModel?.toggleStrikethrough()
                         }
                     }
                 }
@@ -46,16 +46,16 @@ struct FormattingToolbarV2: View {
                         .foregroundColor(ThemeColors.secondaryLabel)
 
                     HStack(spacing: Theme.smallSpacing) {
-                        FormatButton(icon: "h1.square", isActive: editableText?.paragraphFormat == .heading1) {
-                            editableText?.paragraphFormat = .heading1
+                        FormatButton(icon: "h1.square", isActive: viewModel?.paragraphFormat == .heading1) {
+                            viewModel?.paragraphFormat = .heading1
                         }
 
-                        FormatButton(icon: "h2.square", isActive: editableText?.paragraphFormat == .heading2) {
-                            editableText?.paragraphFormat = .heading2
+                        FormatButton(icon: "h2.square", isActive: viewModel?.paragraphFormat == .heading2) {
+                            viewModel?.paragraphFormat = .heading2
                         }
 
-                        FormatButton(icon: "h3.square", isActive: editableText?.paragraphFormat == .heading3) {
-                            editableText?.paragraphFormat = .heading3
+                        FormatButton(icon: "h3.square", isActive: viewModel?.paragraphFormat == .heading3) {
+                            viewModel?.paragraphFormat = .heading3
                         }
                     }
                 }
@@ -102,8 +102,8 @@ struct FormattingToolbarV2: View {
 
 #Preview {
     VStack {
-        FormattingToolbarV2(
-            editableText: nil,
+        GroupedFormattingToolbar(
+            viewModel: nil,
             showingLocationPicker: .constant(false)
         )
     }
