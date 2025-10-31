@@ -1,0 +1,101 @@
+# SwiftLint Configuration for PassantEditor
+# Rich text editor prototype with iOS 26 native formatting
+
+# Paths to include during linting
+included:
+  - PassantEditor
+
+# Paths to exclude from linting
+excluded:
+  - Pods
+  - build
+  - DerivedData
+  - .build
+  - PassantEditorTests
+  - PassantEditorUITests
+
+# Opt-in rules (explicitly enable these rules)
+opt_in_rules:
+  - redundant_nil_coalescing
+  - sorted_first_last
+  - modifier_order
+  - empty_count
+  - first_where
+  - last_where
+  - explicit_init
+  - multiline_parameters
+  - vertical_parameter_alignment_on_call
+  - unneeded_parentheses_in_closure_argument
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - operator_usage_whitespace
+  - implicit_optional_initialization
+  - discouraged_optional_boolean
+  - discouraged_optional_collection
+  - empty_string
+  - file_header
+  - flatmap_over_map_reduce
+  - sorted_imports
+  - strict_fileprivate
+  - toggle_bool
+  - unused_optional_binding
+  - yoda_condition
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+
+# Rules to disable
+disabled_rules:
+  - todo
+  - force_cast
+  - force_try
+  - trailing_comma
+  - identifier_name
+  - type_name
+  - opening_brace
+  - redundant_discardable_let
+  - file_length
+
+# Analyzer rules (require compilation)
+analyzer_rules:
+  - explicit_self
+  - unused_import
+  - unused_declaration
+
+# Rule configurations
+cyclomatic_complexity:
+  warning: 25
+  error: 35
+
+nesting:
+  type_level:
+    warning: 3
+    error: 4
+
+function_parameter_count:
+  warning: 8
+  error: 10
+
+line_length:
+  warning: 120
+  error: 150
+  ignores_comments: true
+  ignores_urls: true
+
+type_body_length:
+  warning: 350
+  error: 400
+
+function_body_length:
+  warning: 60
+  error: 80
+
+# Custom rules
+custom_rules:
+  no_direct_modelcontext_in_views:
+    name: "No Direct ModelContext in Views"
+    regex: '(@Environment\(\\\.modelContext\)|modelContext:)'
+    match_kinds:
+      - attribute.builtin
+      - identifier
+    message: "Avoid using ModelContext directly in Views. Use a ViewModel or Repository pattern."
+    severity: warning

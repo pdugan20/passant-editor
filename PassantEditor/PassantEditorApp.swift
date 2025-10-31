@@ -5,14 +5,16 @@
 //  Created by Patrick Dugan on 10/31/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct PassantEditorApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Note.self,
+            Location.self,
+            AttributedStringModel.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -23,10 +25,33 @@ struct PassantEditorApp: App {
         }
     }()
 
+    @State private var hasInitializedSampleData = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NoteListView()
+                .preferredColorScheme(.dark)
+                .onAppear {
+                    if !hasInitializedSampleData {
+                        initializeSampleData()
+                        hasInitializedSampleData = true
+                    }
+                }
         }
         .modelContainer(sharedModelContainer)
+    }
+
+    @MainActor
+    private func initializeSampleData() {
+        let context = sharedModelContainer.mainContext
+
+        // Check if we already have notes
+        let descriptor = FetchDescriptor<Note>()
+        let existingNotes = (try? context.fetch(descriptor)) ?? []
+
+        // Only generate sample data if empty
+        if existingNotes.isEmpty {
+            SampleDataGenerator.generateSampleData(context: context)
+        }
     }
 }

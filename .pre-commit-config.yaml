@@ -1,0 +1,38 @@
+# Pre-commit hooks configuration for PassantEditor
+# See https://pre-commit.com for more information
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+        exclude: \.md$
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-added-large-files
+
+  # SwiftLint
+  - repo: local
+    hooks:
+      - id: swiftlint
+        name: SwiftLint
+        entry: /opt/homebrew/bin/swiftlint lint
+        language: system
+        files: \.swift$
+        pass_filenames: false
+        always_run: true
+
+  # Xcode project file check
+  - repo: local
+    hooks:
+      - id: xcode-project-modified
+        name: Warn on Xcode project modifications
+        entry: bash -c 'echo WARNING Xcode project file was modified'
+        language: system
+        files: \.xcodeproj/project\.pbxproj$
+        pass_filenames: false

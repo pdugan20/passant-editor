@@ -1,0 +1,220 @@
+# PassantEditor - Rich Text Note Prototyping
+
+An iOS 26 prototype application for testing different rich text editing experiences and keyboard toolbar configurations for a note-taking app focused on tracking favorite places.
+
+## Features
+
+- **iOS 26 Native Rich Text Editing** - Uses AttributedString with AttributedTextFormattingDefinition for native formatting
+- **Three Keyboard Toolbar Variants** - Test different UX approaches for text formatting:
+  - Simple: Horizontal scrolling with all options visible
+  - Grouped: Visual sections for different formatting types
+  - Compact: Most-used actions with overflow menu
+- **Location Mention Pills** - @mention places with styled pills that persist in notes
+- **Sample Data** - Pre-populated with real Seattle venues (dive bars, pizza places, cafes)
+- **Rich Formatting** - Bold, italic, underline, strikethrough, headings (H1-H3), lists
+- **Liquid Glass Design** - iOS 26 glass effects throughout the UI
+- **SwiftData Persistence** - All notes and formatting preserved between sessions
+- **Dark Mode Only** - Optimized for dark theme
+
+## Tech Stack
+
+- SwiftUI (iOS 26)
+- SwiftData for persistence
+- AttributedTextFormattingDefinition for rich text constraints
+- AttributedString with custom attribute scopes
+- Liquid Glass effects (`.glassEffect()`)
+
+## Getting Started
+
+### Prerequisites
+
+- Xcode 17.0 or later
+- iOS 26.0 SDK
+- macOS with Apple Silicon or Intel processor
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/pdugan20/passant-editor.git
+cd passant-editor/PassantEditor
+```
+
+2. Open the project in Xcode:
+```bash
+open PassantEditor.xcodeproj
+```
+
+3. Select a simulator or device with iOS 26.0+
+
+4. Build and run (⌘R)
+
+## Development
+
+### Building
+
+```bash
+cd PassantEditor
+xcodebuild -scheme PassantEditor \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  clean build
+```
+
+### Code Quality
+
+This project uses SwiftLint for code quality and consistency.
+
+**Run SwiftLint:**
+```bash
+cd PassantEditor
+swiftlint lint
+```
+
+**Auto-fix violations:**
+```bash
+swiftlint --fix
+```
+
+### Pre-commit Hooks
+
+The project uses pre-commit hooks to ensure code quality before commits.
+
+**Install pre-commit:**
+```bash
+brew install pre-commit
+```
+
+**Install the git hooks:**
+```bash
+cd PassantEditor
+pre-commit install
+```
+
+**Run hooks manually:**
+```bash
+pre-commit run --all-files
+```
+
+The pre-commit hooks will:
+- Run SwiftLint in strict mode
+- Check for trailing whitespace
+- Validate YAML and JSON files
+- Check for merge conflicts
+- Warn on Xcode project file modifications
+
+## Project Structure
+
+```
+PassantEditor/
+├── PassantEditor/
+│   ├── Models/
+│   │   ├── Note.swift                      # Note model with AttributedString content
+│   │   ├── Location.swift                  # Location model for place mentions
+│   │   ├── AttributedStringModel.swift     # SwiftData persistence for AttributedString
+│   │   ├── NoteAttributeScopes.swift       # Custom attribute definitions
+│   │   └── NoteFormattingDefinition.swift  # Formatting constraints
+│   ├── ViewModels/
+│   │   └── EditableNoteText.swift          # View model for note editing
+│   ├── Views/
+│   │   ├── NoteListView.swift              # Main list of notes
+│   │   ├── NoteEditorView.swift            # Rich text editor
+│   │   ├── LocationPickerView.swift        # Location selection sheet
+│   │   ├── SettingsView.swift              # App settings
+│   │   ├── FormattingToolbarV1.swift       # Simple toolbar
+│   │   ├── FormattingToolbarV2.swift       # Grouped toolbar
+│   │   └── FormattingToolbarV3.swift       # Compact toolbar
+│   ├── Themes/
+│   │   └── Theme.swift                     # Dark mode theme with Liquid Glass
+│   ├── SampleDataGenerator.swift           # Pre-populated notes
+│   └── PassantEditorApp.swift              # App entry point
+├── .swiftlint.yml                          # SwiftLint configuration
+├── .pre-commit-config.yaml                 # Pre-commit hooks config
+└── .github/
+    └── workflows/
+        └── code-quality.yml                # CI/CD workflow
+```
+
+## Features in Detail
+
+### Rich Text Formatting
+
+The app supports comprehensive text formatting using iOS 26's native AttributedTextFormattingDefinition system:
+
+- **Text Styles:** Bold, italic, underline, strikethrough
+- **Headings:** H1, H2, H3 with automatic styling
+- **Lists:** Bullet points and numbered lists (UI ready, full implementation TBD)
+- **Location Pills:** Inline mentions of places with custom styling
+
+### Keyboard Toolbars
+
+Three toolbar variants for UX testing:
+
+**Version 1 - Simple**
+- Horizontal scrolling strip
+- All formatting options visible as icons
+- Quick access to all features
+- Best for: Users who want everything visible
+
+**Version 2 - Grouped**
+- Visual sections (Style | Heading | Lists | Location)
+- Glass containers group related actions
+- Better visual organization
+- Best for: Users who think in categories
+
+**Version 3 - Compact**
+- Most-used actions visible (Bold, Italic, List, Location)
+- Overflow menu for less-common options
+- Minimal keyboard footprint
+- Best for: Users who want maximum screen space
+
+Switch between toolbars in Settings.
+
+### Sample Data
+
+The app includes three pre-populated notes with realistic formatting:
+
+1. **Favorite Dive Bars** - Bullets, location pills, italic descriptions
+2. **Best Pizza** - Numbered list, subheadings, underlined text
+3. **Favorite Cafes in Seattle** - H1 heading, strikethrough, bold+italic combo
+
+All feature real Seattle venues as example data.
+
+## Architecture
+
+- **SwiftUI** for all UI
+- **SwiftData** for persistence
+- **Observable** pattern for view models
+- **AttributedTextFormattingDefinition** for text formatting rules
+- **Custom AttributeScopes** for location pills and formatting metadata
+
+## CI/CD
+
+The project uses GitHub Actions for continuous integration:
+
+- **Code Quality Checks** - SwiftLint validation on every push/PR
+- **Build Verification** - Ensures project builds successfully
+- **macOS Latest** - Runs on GitHub-hosted macOS runners
+
+## Future Enhancements
+
+- [ ] Full list implementation (indentation, nested lists)
+- [ ] Text color picker
+- [ ] Link insertion
+- [ ] Image attachment
+- [ ] Export to Markdown/HTML
+- [ ] iCloud sync
+- [ ] Undo/redo stack
+- [ ] Custom keyboard shortcuts
+- [ ] VoiceOver accessibility improvements
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details.
+
+Copyright (c) 2025 Patrick Dugan
+
+## Acknowledgments
+
+- Built with iOS 26's new AttributedTextFormattingDefinition API
+- Inspired by Apple's WWDC25 session 280: "Cook up a rich text experience in SwiftUI"
+- Uses patterns from the BuildingRichSwiftUITextExperiences sample project

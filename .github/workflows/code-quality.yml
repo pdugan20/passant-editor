@@ -1,0 +1,49 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    name: SwiftLint and Build
+    runs-on: macos-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.0'
+
+      - name: Install SwiftLint
+        run: |
+          brew update
+          brew install swiftlint
+
+      - name: Cache SwiftLint
+        uses: actions/cache@v3
+        with:
+          path: /opt/homebrew/Cellar/swiftlint
+          key: ${{ runner.os }}-swiftlint-${{ hashFiles('PassantEditor/.swiftlint.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-swiftlint-
+
+      - name: Run SwiftLint
+        run: |
+          cd PassantEditor
+          swiftlint lint . --config .swiftlint.yml --reporter github-actions-logging
+
+      - name: Build project
+        run: |
+          cd PassantEditor
+          xcodebuild -scheme PassantEditor \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty && exit ${PIPESTATUS[0]}
