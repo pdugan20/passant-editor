@@ -40,8 +40,8 @@ jobs:
 
       - name: Build project
         run: |
-          cd PassantEditor
-          xcodebuild -scheme PassantEditor \
+          xcodebuild -project PassantEditor.xcodeproj \
+            -scheme PassantEditor \
             -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
             clean build \
             CODE_SIGNING_ALLOWED=NO \
