@@ -136,6 +136,7 @@ enum SampleDataGenerator {
         if let shortys = locations["Shorty's"] {
             var item1 = AttributedString("• ")
             var locationText = AttributedString("Shorty's")
+            print("[DEBUG] Sample Data - Setting Shorty's location ID: \(shortys.id)")
             locationText.location = shortys.id
             item1.append(locationText)
             item1.append(AttributedString(" - Pinball and cheap beer\n"))

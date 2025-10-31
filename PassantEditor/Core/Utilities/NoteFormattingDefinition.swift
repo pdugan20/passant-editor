@@ -85,10 +85,14 @@ struct LocationPillBackground: AttributedTextValueConstraint {
     let locations: Set<Location.ID>
 
     func constrain(_ container: inout Attributes) {
-        if let locationID = container.location, locations.contains(locationID) {
-            container.backgroundColor = .red.opacity(0.2)
-        } else {
-            if container.location != nil {
+        if let locationID = container.location {
+            let contains = locations.contains(locationID)
+            print("[DEBUG] LocationPillBackground - locationID: \(locationID)")
+            print("[DEBUG] LocationPillBackground - contains: \(contains)")
+            print("[DEBUG] LocationPillBackground - locations count: \(locations.count)")
+            if contains {
+                container.backgroundColor = .red.opacity(0.2)
+            } else {
                 container.backgroundColor = nil
             }
         }
@@ -103,10 +107,13 @@ struct LocationPillForeground: AttributedTextValueConstraint {
     let locations: Set<Location.ID>
 
     func constrain(_ container: inout Attributes) {
-        if let locationID = container.location, locations.contains(locationID) {
-            container.foregroundColor = .red
-        } else {
-            if container.location != nil {
+        if let locationID = container.location {
+            let contains = locations.contains(locationID)
+            print("[DEBUG] LocationPillForeground - locationID: \(locationID)")
+            print("[DEBUG] LocationPillForeground - contains: \(contains)")
+            if contains {
+                container.foregroundColor = .red
+            } else {
                 container.foregroundColor = nil
             }
         }

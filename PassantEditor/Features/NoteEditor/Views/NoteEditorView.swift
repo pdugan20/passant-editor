@@ -65,10 +65,24 @@ struct NoteEditorView: View {
             if viewModel == nil {
                 viewModel = NoteEditorViewModel(note: note)
             }
-            locationIDs = Set(note.locations.map { $0.id })
+            // Extract location IDs directly from the attributed text content
+            // This ensures we use the same backing type as stored in the content
+            if let vm = viewModel {
+                let ids = vm.locationIDsFromContent()
+                print("[DEBUG] onAppear - note.locations count: \(note.locations.count)")
+                print("[DEBUG] onAppear - content location IDs count: \(ids.count)")
+                print("[DEBUG] onAppear - content location IDs: \(ids)")
+                locationIDs = ids
+            }
         }
-        .onChange(of: note.locations.map { $0.id }) { _, newIDs in
-            locationIDs = Set(newIDs)
+        .onChange(of: note.content) { _, _ in
+            // When content changes, update location IDs from content
+            if let vm = viewModel {
+                let ids = vm.locationIDsFromContent()
+                print("[DEBUG] onChange content - location IDs count: \(ids.count)")
+                print("[DEBUG] onChange content - location IDs: \(ids)")
+                locationIDs = ids
+            }
         }
         .sheet(isPresented: $showingLocationPicker) {
             LocationPickerView { location in

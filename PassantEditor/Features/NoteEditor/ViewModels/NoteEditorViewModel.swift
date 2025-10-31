@@ -176,4 +176,17 @@ extension NoteEditorViewModel {
             model.locations.append(location)
         }
     }
+
+    /// Extract all location IDs from the attributed text content
+    func locationIDsFromContent() -> Set<Location.ID> {
+        var locationIDs = Set<Location.ID>()
+
+        for run in text.runs {
+            if let locationID = run.location {
+                locationIDs.insert(locationID)
+            }
+        }
+
+        return locationIDs
+    }
 }
