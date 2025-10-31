@@ -102,6 +102,7 @@ struct SimpleFormattingToolbar: View {
         }
         .scrollContentBackground(.hidden)
         .contentMargins(.horizontal, 0)
+        .frame(maxWidth: .infinity)
         .frame(height: 58)
     }
 }
