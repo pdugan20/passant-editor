@@ -10,8 +10,9 @@ struct SimpleFormattingToolbar: View {
     @Binding var showingLocationPicker: Bool
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: Theme.extraLargeSpacing) {
+        VStack(spacing: 0) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: Theme.extraLargeSpacing) {
                 // Text formatting
                 FormatButton(
                     icon: "bold",
@@ -98,12 +99,13 @@ struct SimpleFormattingToolbar: View {
                     showingLocationPicker = true
                 }
             }
-            .padding(.horizontal, 32)
         }
+        .frame(maxWidth: .infinity)
         .scrollContentBackground(.hidden)
         .contentMargins(.horizontal, 0)
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 32)
         .frame(height: 58)
+        }
     }
 }
 
