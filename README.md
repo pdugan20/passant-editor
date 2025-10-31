@@ -1,10 +1,10 @@
 # PassantEditor - Rich Text Note Prototyping
 
-An iOS 26 prototype application for testing different rich text editing experiences and keyboard toolbar configurations for a note-taking app focused on tracking favorite places.
+An iOS prototype application for testing different rich text editing experiences and keyboard toolbar configurations for a note-taking app focused on tracking favorite places.
 
 ## Features
 
-- **iOS 26 Native Rich Text Editing** - Uses AttributedString with AttributedTextFormattingDefinition for native formatting
+- **Native Rich Text Editing** - Uses AttributedString with AttributedTextFormattingDefinition for native formatting
 - **Three Keyboard Toolbar Variants** - Test different UX approaches for text formatting:
   - Simple: Horizontal scrolling with all options visible
   - Grouped: Visual sections for different formatting types
@@ -12,23 +12,21 @@ An iOS 26 prototype application for testing different rich text editing experien
 - **Location Mention Pills** - @mention places with styled pills that persist in notes
 - **Sample Data** - Pre-populated with real Seattle venues (dive bars, pizza places, cafes)
 - **Rich Formatting** - Bold, italic, underline, strikethrough, headings (H1-H3), lists
-- **Liquid Glass Design** - iOS 26 glass effects throughout the UI
 - **SwiftData Persistence** - All notes and formatting preserved between sessions
 - **Dark Mode Only** - Optimized for dark theme
 
 ## Tech Stack
 
-- SwiftUI (iOS 26)
+- SwiftUI
 - SwiftData for persistence
 - AttributedTextFormattingDefinition for rich text constraints
 - AttributedString with custom attribute scopes
-- Liquid Glass effects (`.glassEffect()`)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Xcode 17.0 or later
+- Xcode 26.0 or later
 - iOS 26.0 SDK
 - macOS with Apple Silicon or Intel processor
 
@@ -106,19 +104,19 @@ The pre-commit hooks will:
 
 ```
 PassantEditor/
-├── App/ - App entry point
+├── App/                                    # App entry point
 ├── Core/
-│   ├── Models/ - SwiftData models (Note, Location, AttributedString)
-│   ├── Utilities/ - Sample data, attribute scopes, formatting definitions
-│   └── Theme/ - Liquid Glass theme and view modifiers
+│   ├── Models/                             # SwiftData models (Note, Location, AttributedString)
+│   ├── Utilities/                          # Sample data, attribute scopes, formatting definitions
+│   └── Theme/                              # Theme styling and view modifiers
 ├── Features/
-│   ├── NoteEditor/ - Rich text editing (views, view models, toolbars)
-│   ├── Locations/ - Location picker and management
-│   └── Settings/ - App settings
-├── Shared/Components/ - Reusable UI components
-├── .swiftlint.yml - Code quality rules
-├── .pre-commit-config.yaml - Git hooks
-└── .github/workflows/ - CI/CD automation
+│   ├── NoteEditor/                         # Rich text editing (views, view models, toolbars)
+│   ├── Locations/                          # Location picker and management
+│   └── Settings/                           # App settings
+├── Shared/Components/                      # Reusable UI components
+├── .swiftlint.yml                          # Code quality rules
+├── .pre-commit-config.yaml                 # Git hooks
+└── .github/workflows/                      # CI/CD automation
 ```
 
 ## Features in Detail
@@ -136,19 +134,19 @@ The app supports comprehensive text formatting using iOS 26's native AttributedT
 
 Three toolbar variants for UX testing:
 
-**Version 1 - Simple**
+**Simple**
 - Horizontal scrolling strip
 - All formatting options visible as icons
 - Quick access to all features
 - Best for: Users who want everything visible
 
-**Version 2 - Grouped**
+**Grouped**
 - Visual sections (Style | Heading | Lists | Location)
-- Glass containers group related actions
+- Related actions grouped together
 - Better visual organization
 - Best for: Users who think in categories
 
-**Version 3 - Compact**
+**Compact**
 - Most-used actions visible (Bold, Italic, List, Location)
 - Overflow menu for less-common options
 - Minimal keyboard footprint
@@ -199,9 +197,3 @@ The project uses GitHub Actions for continuous integration:
 MIT License - See [LICENSE](LICENSE) for details.
 
 Copyright (c) 2025 Patrick Dugan
-
-## Acknowledgments
-
-- Built with iOS 26's new AttributedTextFormattingDefinition API
-- Inspired by Apple's WWDC25 session 280: "Cook up a rich text experience in SwiftUI"
-- Uses patterns from the BuildingRichSwiftUITextExperiences sample project
