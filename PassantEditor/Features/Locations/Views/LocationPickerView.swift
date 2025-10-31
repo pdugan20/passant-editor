@@ -16,11 +16,43 @@ struct LocationPickerView: View {
 
     let onSelect: (Location) -> Void
 
+    // Reference location (Pike Place Market)
+    private let referenceLatitude = 47.6097
+    private let referenceLongitude = -122.3425
+
     var filteredLocations: [Location] {
         if searchText.isEmpty {
             return locations
         }
         return locations.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    }
+
+    private func calculateDistance(to location: Location) -> String {
+        guard let lat = location.latitude, let lon = location.longitude else {
+            return "? mi"
+        }
+
+        let latDiff = (lat - referenceLatitude) * 69.0
+        let lonDiff = (lon - referenceLongitude) * 54.6
+        let distance = sqrt(latDiff * latDiff + lonDiff * lonDiff)
+
+        return String(format: "%.1f mi", distance)
+    }
+
+    private func formatLocationDetails(_ location: Location) -> String {
+        var parts: [String] = []
+
+        if let type = location.type {
+            parts.append(type)
+        }
+
+        parts.append(calculateDistance(to: location))
+
+        if let address = location.address {
+            parts.append(address)
+        }
+
+        return parts.joined(separator: " • ")
     }
 
     var body: some View {
@@ -31,25 +63,15 @@ struct LocationPickerView: View {
                         onSelect(location)
                         dismiss()
                     } label: {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(location.name)
-                                    .foregroundColor(ThemeColors.label)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(location.name)
+                                .foregroundColor(ThemeColors.label)
 
-                                if let latitude = location.latitude, let longitude = location.longitude {
-                                    Text("lat: \(String(format: "%.2f", latitude)), " +
-                                         "long: \(String(format: "%.2f", longitude))")
-                                        .font(.caption)
-                                        .foregroundColor(ThemeColors.secondaryLabel)
-                                } else {
-                                    Text("No location data")
-                                        .font(.caption)
-                                        .foregroundColor(ThemeColors.secondaryLabel)
-                                }
-                            }
-
-                            Spacer()
+                            Text(formatLocationDetails(location))
+                                .font(.caption)
+                                .foregroundColor(ThemeColors.secondaryLabel)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, Theme.smallSpacing)
                     }
                 }
@@ -74,6 +96,7 @@ struct LocationPickerView: View {
                 }
             }
             .listStyle(.plain)
+            .listSectionSeparator(.hidden)
             .searchable(text: $searchText, prompt: "Search locations")
             .searchPresentationToolbarBehavior(.avoidHidingContent)
             .background(ThemeColors.background)
@@ -85,14 +108,6 @@ struct LocationPickerView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                    }
-                }
-
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingNewLocationSheet = true
-                    } label: {
-                        Image(systemName: "plus")
                     }
                 }
             }

@@ -29,11 +29,11 @@ struct NormalizeFonts: AttributedTextValueConstraint {
         // Check paragraph format first
         switch container.paragraphFormat {
         case .heading1:
-            container.font = .title
+            container.font = .title2.bold()
         case .heading2:
-            container.font = .title2
+            container.font = .title3.weight(.semibold)
         case .heading3:
-            container.font = .title3
+            container.font = .headline.weight(.medium)
         case .body, nil:
             // For body text, check for bold/italic
             guard let font = container.font else {

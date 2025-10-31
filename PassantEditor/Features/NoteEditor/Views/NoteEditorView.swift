@@ -17,14 +17,13 @@ struct NoteEditorView: View {
         VStack(spacing: 0) {
             // Title field
             TextField("Title", text: $note.title)
-                .font(.title2)
+                .font(.largeTitle)
                 .fontWeight(.bold)
-                .padding(Theme.spacing)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Theme.cornerRadius))
-                .padding([.horizontal, .top], Theme.spacing)
+                .padding(.horizontal, Theme.spacing)
+                .padding(.top, Theme.spacing)
 
             Divider()
-                .padding(.vertical, Theme.smallSpacing)
+                .padding(.vertical, 4)
 
             // Content editor
             if let viewModel = viewModel {
@@ -66,33 +65,36 @@ struct NoteEditorView: View {
 
     @ViewBuilder
     private var toolbarContent: some View {
-        switch toolbarVersion {
-        case 1:
-            SimpleFormattingToolbar(
-                viewModel: viewModel,
-                showingLocationPicker: $showingLocationPicker
-            )
-        case 2:
-            CompactFormattingToolbar(
-                viewModel: viewModel,
-                showingLocationPicker: $showingLocationPicker
-            )
-        case 3:
-            ContextualFormattingToolbar(
-                viewModel: viewModel,
-                showingLocationPicker: $showingLocationPicker
-            )
-        case 4:
-            SegmentedFormattingToolbar(
-                viewModel: viewModel,
-                showingLocationPicker: $showingLocationPicker
-            )
-        default:
-            SimpleFormattingToolbar(
-                viewModel: viewModel,
-                showingLocationPicker: $showingLocationPicker
-            )
+        Group {
+            switch toolbarVersion {
+            case 1:
+                SimpleFormattingToolbar(
+                    viewModel: viewModel,
+                    showingLocationPicker: $showingLocationPicker
+                )
+            case 2:
+                CompactFormattingToolbar(
+                    viewModel: viewModel,
+                    showingLocationPicker: $showingLocationPicker
+                )
+            case 3:
+                ContextualFormattingToolbar(
+                    viewModel: viewModel,
+                    showingLocationPicker: $showingLocationPicker
+                )
+            case 4:
+                SegmentedFormattingToolbar(
+                    viewModel: viewModel,
+                    showingLocationPicker: $showingLocationPicker
+                )
+            default:
+                SimpleFormattingToolbar(
+                    viewModel: viewModel,
+                    showingLocationPicker: $showingLocationPicker
+                )
+            }
         }
+        .padding(.bottom, Theme.spacing)
     }
 }
 

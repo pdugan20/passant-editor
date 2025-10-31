@@ -52,19 +52,31 @@ struct CompactFormattingToolbar: View {
                 Button {
                     viewModel?.paragraphFormat = .heading1
                 } label: {
-                    Label("Heading 1", systemImage: "1.square.fill")
+                    Label {
+                        Text("Heading 1")
+                    } icon: {
+                        Image.customSymbol("h1")
+                    }
                 }
 
                 Button {
                     viewModel?.paragraphFormat = .heading2
                 } label: {
-                    Label("Heading 2", systemImage: "2.square.fill")
+                    Label {
+                        Text("Heading 2")
+                    } icon: {
+                        Image.customSymbol("h2")
+                    }
                 }
 
                 Button {
                     viewModel?.paragraphFormat = .heading3
                 } label: {
-                    Label("Heading 3", systemImage: "3.square.fill")
+                    Label {
+                        Text("Heading 3")
+                    } icon: {
+                        Image.customSymbol("h3")
+                    }
                 }
 
                 Divider()
@@ -80,8 +92,9 @@ struct CompactFormattingToolbar: View {
             }
             .toolbarButtonStyle(isActive: showingMoreOptions)
         }
-        .padding(.horizontal, Theme.spacing)
-        .frame(height: 50)
+        .padding(.horizontal, Theme.smallSpacing)
+        .padding(.bottom, Theme.smallSpacing)
+        .frame(height: 58)
     }
 }
 

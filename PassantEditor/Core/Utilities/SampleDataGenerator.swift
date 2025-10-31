@@ -12,7 +12,75 @@ enum SampleDataGenerator {
         let name: String
         let latitude: Double?
         let longitude: Double?
+        let address: String?
+        let type: String?
     }
+
+    private static let seattleLocations: [LocationData] = [
+        LocationData(
+            name: "Shorty's",
+            latitude: 47.6134,
+            longitude: -122.3477,
+            address: "2222 2nd Ave, Seattle, WA 98121",
+            type: "Bar"
+        ),
+        LocationData(
+            name: "The Croc",
+            latitude: 47.6174,
+            longitude: -122.3468,
+            address: "2200 2nd Ave, Seattle, WA 98121",
+            type: "Music Venue"
+        ),
+        LocationData(
+            name: "Unicorn",
+            latitude: 47.6134,
+            longitude: -122.3215,
+            address: "1118 E Pike St, Seattle, WA 98122",
+            type: "Bar"
+        ),
+        LocationData(
+            name: "Delancey",
+            latitude: 47.6488,
+            longitude: -122.3425,
+            address: "1415 NW 70th St, Seattle, WA 98117",
+            type: "Restaurant"
+        ),
+        LocationData(
+            name: "Serious Pie",
+            latitude: 47.6102,
+            longitude: -122.3411,
+            address: "316 Virginia St, Seattle, WA 98121",
+            type: "Restaurant"
+        ),
+        LocationData(
+            name: "Dino's",
+            latitude: 47.6742,
+            longitude: -122.3156,
+            address: "6906 15th Ave NW, Seattle, WA 98117",
+            type: "Restaurant"
+        ),
+        LocationData(
+            name: "Victrola Coffee",
+            latitude: 47.6132,
+            longitude: -122.3165,
+            address: "310 E Pike St, Seattle, WA 98122",
+            type: "Cafe"
+        ),
+        LocationData(
+            name: "Analog Coffee",
+            latitude: 47.6133,
+            longitude: -122.3477,
+            address: "235 Summit Ave E, Seattle, WA 98102",
+            type: "Cafe"
+        ),
+        LocationData(
+            name: "Elm Coffee Roasters",
+            latitude: 47.6610,
+            longitude: -122.3206,
+            address: "240 N 65th St, Seattle, WA 98103",
+            type: "Cafe"
+        )
+    ]
 
     @MainActor
     static func generateSampleData(context: ModelContext) {
@@ -39,22 +107,16 @@ enum SampleDataGenerator {
 
     @MainActor
     private static func createLocations(context: ModelContext) -> [String: Location] {
-        let locationData: [LocationData] = [
-            LocationData(name: "Shorty's", latitude: 47.6134, longitude: -122.3477),
-            LocationData(name: "The Croc", latitude: 47.6174, longitude: -122.3468),
-            LocationData(name: "Unicorn", latitude: 47.6134, longitude: -122.3215),
-            LocationData(name: "Delancey", latitude: 47.6488, longitude: -122.3425),
-            LocationData(name: "Serious Pie", latitude: 47.6102, longitude: -122.3411),
-            LocationData(name: "Dino's", latitude: 47.6742, longitude: -122.3156),
-            LocationData(name: "Victrola Coffee", latitude: 47.6132, longitude: -122.3165),
-            LocationData(name: "Analog Coffee", latitude: 47.6133, longitude: -122.3477),
-            LocationData(name: "Elm Coffee Roasters", latitude: 47.6610, longitude: -122.3206)
-        ]
-
         var locationMap: [String: Location] = [:]
 
-        for data in locationData {
-            let location = Location(name: data.name, latitude: data.latitude, longitude: data.longitude)
+        for data in seattleLocations {
+            let location = Location(
+                name: data.name,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                address: data.address,
+                type: data.type
+            )
             context.insert(location)
             locationMap[data.name] = location
         }

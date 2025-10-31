@@ -19,7 +19,7 @@ struct SegmentedFormattingToolbar: View {
                 Text("Insert").tag(2)
             }
             .pickerStyle(.segmented)
-            .padding(.horizontal, Theme.spacing)
+            .padding(.horizontal, Theme.smallSpacing)
             .padding(.vertical, Theme.smallSpacing)
 
             // Toolbar content based on selected tab
@@ -58,22 +58,25 @@ struct SegmentedFormattingToolbar: View {
                 case 1:
                     // Structure - Headings and Lists
                     FormatButton(
-                        icon: "1.square.fill",
-                        isActive: viewModel?.paragraphFormat == .heading1
+                        icon: "h1",
+                        isActive: viewModel?.paragraphFormat == .heading1,
+                        isCustomSymbol: true
                     ) {
                         viewModel?.paragraphFormat = .heading1
                     }
 
                     FormatButton(
-                        icon: "2.square.fill",
-                        isActive: viewModel?.paragraphFormat == .heading2
+                        icon: "h2",
+                        isActive: viewModel?.paragraphFormat == .heading2,
+                        isCustomSymbol: true
                     ) {
                         viewModel?.paragraphFormat = .heading2
                     }
 
                     FormatButton(
-                        icon: "3.square.fill",
-                        isActive: viewModel?.paragraphFormat == .heading3
+                        icon: "h3",
+                        isActive: viewModel?.paragraphFormat == .heading3,
+                        isCustomSymbol: true
                     ) {
                         viewModel?.paragraphFormat = .heading3
                     }
@@ -110,7 +113,7 @@ struct SegmentedFormattingToolbar: View {
                     EmptyView()
                 }
             }
-            .padding(.horizontal, Theme.spacing)
+            .padding(.horizontal, Theme.smallSpacing)
             .padding(.bottom, Theme.smallSpacing)
             .frame(height: 50)
         }
