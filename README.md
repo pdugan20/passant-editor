@@ -5,15 +5,15 @@ An iOS prototype application for testing different rich text editing experiences
 ## Features
 
 - **Native Rich Text Editing** - Uses AttributedString with AttributedTextFormattingDefinition for native formatting
-- **Three Keyboard Toolbar Variants** - Test different UX approaches for text formatting:
+- **Two Keyboard Toolbar Variants** - Test different UX approaches for text formatting:
   - Simple: Horizontal scrolling with all options visible
-  - Grouped: Visual sections for different formatting types
   - Compact: Most-used actions with overflow menu
 - **Location Mention Pills** - @mention places with styled pills that persist in notes
 - **Sample Data** - Pre-populated with real Seattle venues (dive bars, pizza places, cafes)
 - **Rich Formatting** - Bold, italic, underline, strikethrough, headings (H1-H3), lists
 - **SwiftData Persistence** - All notes and formatting preserved between sessions
 - **Dark Mode Only** - Optimized for dark theme
+- **Smart Keyboard Avoidance** - Editor stays in place unless scrolling is necessary
 
 ## Tech Stack
 
@@ -49,28 +49,18 @@ open PassantEditor.xcodeproj
 
 ## Development
 
-### Building
-
-```bash
-cd PassantEditor
-xcodebuild -scheme PassantEditor \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-  clean build
-```
-
 ### Code Quality
 
 This project uses SwiftLint for code quality and consistency.
 
 **Run SwiftLint:**
 ```bash
-cd PassantEditor
-swiftlint lint
+swiftlint lint PassantEditor --config .swiftlint.yml
 ```
 
 **Auto-fix violations:**
 ```bash
-swiftlint --fix
+swiftlint --fix PassantEditor --config .swiftlint.yml
 ```
 
 ### Pre-commit Hooks
@@ -84,7 +74,6 @@ brew install pre-commit
 
 **Install the git hooks:**
 ```bash
-cd PassantEditor
 pre-commit install
 ```
 
@@ -132,19 +121,14 @@ The app supports comprehensive text formatting using iOS 26's native AttributedT
 
 ### Keyboard Toolbars
 
-Three toolbar variants for UX testing:
+Two toolbar variants for UX testing:
 
 **Simple**
 - Horizontal scrolling strip
 - All formatting options visible as icons
 - Quick access to all features
+- Edge-to-edge glass background
 - Best for: Users who want everything visible
-
-**Grouped**
-- Visual sections (Style | Heading | Lists | Location)
-- Related actions grouped together
-- Better visual organization
-- Best for: Users who think in categories
 
 **Compact**
 - Most-used actions visible (Bold, Italic, List, Location)
@@ -177,7 +161,6 @@ All feature real Seattle venues as example data.
 The project uses GitHub Actions for continuous integration:
 
 - **Code Quality Checks** - SwiftLint validation on every push/PR
-- **Build Verification** - Ensures project builds successfully
 - **macOS Latest** - Runs on GitHub-hosted macOS runners
 
 ## Future Enhancements
