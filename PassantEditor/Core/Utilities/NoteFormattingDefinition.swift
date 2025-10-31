@@ -86,7 +86,7 @@ struct LocationPillBackground: AttributedTextValueConstraint {
 
     func constrain(_ container: inout Attributes) {
         if let locationID = container.location, locations.contains(locationID) {
-            container.backgroundColor = .blue.opacity(0.2)
+            container.backgroundColor = .red.opacity(0.2)
         } else {
             if container.location != nil {
                 container.backgroundColor = nil
@@ -104,7 +104,7 @@ struct LocationPillForeground: AttributedTextValueConstraint {
 
     func constrain(_ container: inout Attributes) {
         if let locationID = container.location, locations.contains(locationID) {
-            container.foregroundColor = .blue
+            container.foregroundColor = .red
         } else {
             if container.location != nil {
                 container.foregroundColor = nil

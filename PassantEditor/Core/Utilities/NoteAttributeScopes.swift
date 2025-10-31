@@ -22,6 +22,7 @@ extension AttributeScopes {
     /// Attributes that capture all information and formatting available in the note editor.
     struct NoteEditorAttributes: AttributeScope {
         let model: NoteModelAttributes
+        let custom: CustomNoteAttributes
         let foregroundColor: AttributeScopes.SwiftUIAttributes.ForegroundColorAttribute
         let backgroundColor: AttributeScopes.SwiftUIAttributes.BackgroundColorAttribute
     }

@@ -127,14 +127,17 @@ enum SampleDataGenerator {
     private static func createDiveBarsNote(locations: [String: Location]) -> Note {
         var content = AttributedString()
 
-        // Bullet list with locations
+        // Belltown subheading
+        var belltownHeading = AttributedString("Belltown\n")
+        belltownHeading.paragraphFormat = .heading3
+        content.append(belltownHeading)
+
         if let shortys = locations["Shorty's"] {
             var item1 = AttributedString("• ")
             var locationText = AttributedString("Shorty's")
             locationText.location = shortys.id
             item1.append(locationText)
-            item1.append(AttributedString(" - Pinball paradise with over 30 machines, cheap beer, and surprisingly good hot dogs. "))
-            item1.append(AttributedString("A Belltown institution since 1983.\n"))
+            item1.append(AttributedString(" - Pinball and cheap beer\n"))
             content.append(item1)
         }
 
@@ -142,12 +145,11 @@ enum SampleDataGenerator {
             var item2 = AttributedString("• ")
             var locationText = AttributedString("The Croc")
             locationText.location = croc.id
-            item2.append(AttributedString(" - Historic music venue that's hosted everyone from Nirvana to local indie bands. "))
-            item2.append(AttributedString("Intimate stage with solid sound system and cheap drinks.\n"))
+            item2.append(AttributedString(" - Historic music venue with cheap drinks\n"))
             content.append(item2)
         }
 
-        // Subheading
+        // Capitol Hill subheading
         var subheading = AttributedString("\nCapitol Hill\n")
         subheading.paragraphFormat = .heading3
         content.append(subheading)
@@ -157,8 +159,7 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Unicorn")
             locationText.location = unicorn.id
             item3.append(locationText)
-            item3.append(AttributedString(" - Carnival games meet craft cocktails in this weird and wonderful Capitol Hill spot. "))
-            item3.append(AttributedString("The photo booth is a must, and don't miss corn dog Thursdays.\n"))
+            item3.append(AttributedString(" - Carnival games and craft cocktails\n"))
             content.append(item3)
         }
 
@@ -175,8 +176,8 @@ enum SampleDataGenerator {
         var content = AttributedString()
 
         // Heading
-        var heading = AttributedString("Capitol Hill\n")
-        heading.paragraphFormat = .heading2
+        var heading = AttributedString("Ballard\n")
+        heading.paragraphFormat = .heading3
         content.append(heading)
 
         // Numbered list
@@ -185,26 +186,27 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Delancey")
             locationText.location = delancey.id
             item1.append(locationText)
-            item1.append(AttributedString("\n  Wood-fired Neapolitan perfection in Ballard. "))
-            item1.append(AttributedString("Their margherita showcases simple ingredients done right. "))
-            item1.append(AttributedString("Cozy neighborhood vibe with communal seating.\n"))
+            item1.append(AttributedString("\n  Wood-fired Neapolitan pizza\n"))
             content.append(item1)
         }
+
+        // Downtown heading
+        var downtownHeading = AttributedString("\nDowntown\n")
+        downtownHeading.paragraphFormat = .heading3
+        content.append(downtownHeading)
 
         if let serious = locations["Serious Pie"] {
             var item2 = AttributedString("2. ")
             var locationText = AttributedString("Serious Pie")
             locationText.location = serious.id
             item2.append(locationText)
-            item2.append(AttributedString("\n  Tom Douglas's serious approach to pizza. "))
-            item2.append(AttributedString("The chanterelle mushroom and truffle cheese pizza is legendary. "))
-            item2.append(AttributedString("Great happy hour deals at the downtown location.\n"))
+            item2.append(AttributedString("\n  Tom Douglas's chanterelle mushroom pizza\n"))
             content.append(item2)
         }
 
-        // Another heading
+        // Fremont heading
         var heading2 = AttributedString("\nFremont\n")
-        heading2.paragraphFormat = .heading2
+        heading2.paragraphFormat = .heading3
         content.append(heading2)
 
         if let dinos = locations["Dino's"] {
@@ -212,8 +214,7 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Dino's")
             locationText.location = dinos.id
             item3.append(locationText)
-            item3.append(AttributedString("\n  Late-night NY-style slices in Fremont. Huge portions, crispy crust, open till 4am on weekends. "))
-            item3.append(AttributedString("A Seattle institution since 2006.\n"))
+            item3.append(AttributedString("\n  Late-night NY-style slices\n"))
             content.append(item3)
         }
 
@@ -252,9 +253,7 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Victrola Coffee")
             locationText.location = victrola.id
             item1.append(locationText)
-            item1.append(AttributedString("\n  Spacious Capitol Hill location perfect for laptop sessions. "))
-            item1.append(AttributedString("Their light roasts are exceptional - try the Ethiopian pour-over. "))
-            item1.append(AttributedString("Plenty of outlets and good wifi. Gets busy on weekend mornings but there's usually seating.\n"))
+            item1.append(AttributedString("\n  Light roasts and laptop-friendly\n"))
             content.append(item1)
         }
 
@@ -263,8 +262,7 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Analog Coffee")
             locationText.location = analog.id
             item2.append(locationText)
-            item2.append(AttributedString("\n  Tiny neighborhood spot with a warm, lived-in feel. Their house blend is smooth and balanced. "))
-            item2.append(AttributedString("Pastries from Bakery Nouveau are always fresh. Limited seating but worth the cozy squeeze. Cash only.\n"))
+            item2.append(AttributedString("\n  Cozy spot with Bakery Nouveau pastries\n"))
             content.append(item2)
         }
 
@@ -278,9 +276,7 @@ enum SampleDataGenerator {
             var locationText = AttributedString("Elm Coffee Roasters")
             locationText.location = elm.id
             item3.append(locationText)
-            item3.append(AttributedString("\n  Outstanding single origin options that rotate seasonally. "))
-            item3.append(AttributedString("The baristas really know their stuff and are happy to recommend based on your taste. "))
-            item3.append(AttributedString("Bright, airy space with garage door that opens in summer. Their Kenya AA is legendary.\n"))
+            item3.append(AttributedString("\n  Rotating single origins and expert baristas\n"))
             content.append(item3)
         }
 
