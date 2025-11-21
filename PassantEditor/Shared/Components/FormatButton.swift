@@ -50,6 +50,8 @@ struct FormatButton: View {
             }
         }
         .toolbarButtonStyle(isActive: isActive)
+        .frame(minWidth: 44, minHeight: 44)
+        .contentShape(Rectangle())
     }
 }
 

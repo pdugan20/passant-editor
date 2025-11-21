@@ -22,6 +22,10 @@ final class NoteEditorViewModel: Identifiable {
         set {
             model.content = newValue
             editedText = newValue
+            // Clear ghost text when user types
+            if ghostText != nil {
+                ghostText = nil
+            }
         }
     }
 
@@ -33,6 +37,9 @@ final class NoteEditorViewModel: Identifiable {
     private var lastModified: Date
 
     var selection: AttributedTextSelection
+
+    /// Ghost text to display as placeholder (nil when not showing)
+    var ghostText: String?
 
     init(note: Note) {
         self.model = note
@@ -188,5 +195,56 @@ extension NoteEditorViewModel {
         }
 
         return locationIDs
+    }
+
+    /// Insert a block format at the current position
+    func insertBlockFormat(_ format: BlockFormatType) {
+        // Handle divider specially - it doesn't need ghost text
+        if format == .divider {
+            insertDivider()
+            return
+        }
+
+        // Add newline if text is not empty and doesn't already end with newline
+        if !text.characters.isEmpty {
+            let lastChar = text.characters.last
+            if lastChar != "\n" {
+                text.append(AttributedString("\n"))
+            }
+        }
+
+        // Set paragraph format for the new line
+        switch format {
+        case .heading1:
+            paragraphFormat = .heading1
+        case .heading2:
+            paragraphFormat = .heading2
+        case .heading3:
+            paragraphFormat = .heading3
+        case .bulletList, .numberedList, .quote:
+            // TODO: Implement list and quote formatting
+            paragraphFormat = .body
+        case .divider:
+            break
+        }
+
+        // Set ghost text for placeholder
+        ghostText = format.ghostText
+    }
+
+    private func insertDivider() {
+        // Add newlines and a divider line
+        if !text.characters.isEmpty {
+            let lastChar = text.characters.last
+            if lastChar != "\n" {
+                text.append(AttributedString("\n"))
+            }
+        }
+
+        // Insert a simple divider using em dashes
+        var dividerText = AttributedString("———")
+        dividerText.foregroundColor = .secondary
+        text.append(dividerText)
+        text.append(AttributedString("\n"))
     }
 }
