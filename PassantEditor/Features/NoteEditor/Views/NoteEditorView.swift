@@ -13,6 +13,8 @@ struct NoteEditorView: View {
     @State private var locationIDs: Set<Location.ID> = []
     @State private var keyboardHeight: CGFloat = 0
     @State private var lastKeyboardHeight: CGFloat = 260
+    @State private var preSheetKeyboardHeight: CGFloat = 0
+    @State private var ignoreKeyboardUntil: Date = .distantPast
     @State private var toolbarMode: ToolbarMode = .main
     @State private var showBlockFormatPicker = false
     @State private var keyboardObserversSetUp = false
@@ -20,7 +22,6 @@ struct NoteEditorView: View {
     @Environment(\.modelContext) private var modelContext
 
     private let toolbarHeight: CGFloat = 49
-    private let debug = true
 
     var body: some View {
         ScrollView {
@@ -78,12 +79,16 @@ struct NoteEditorView: View {
         )
         .overlay {
             GeometryReader { geo in
-                if keyboardHeight > 0 || showBlockFormatPicker {
+                let screenHeight = UIScreen.main.bounds.height
+
+                // Show toolbar when: keyboard visible, block picker open, location sheet showing, OR transitioning from sheet
+                if keyboardHeight > 0 || showBlockFormatPicker || showingLocationPicker || preSheetKeyboardHeight > 0 {
                     let gridHeight = showBlockFormatPicker ? lastKeyboardHeight : 0
                     let contentHeight = toolbarHeight + gridHeight
                     let toolbarGap: CGFloat = 4
-                    // Keep toolbar at consistent position - always toolbarGap above keyboard/grid area
-                    let bottomOffset = (showBlockFormatPicker ? 0 : keyboardHeight) + toolbarGap
+                    let effectiveKeyboardHeight = preSheetKeyboardHeight > 0 ? preSheetKeyboardHeight : keyboardHeight
+                    let bottomOffset = (showBlockFormatPicker ? 0 : effectiveKeyboardHeight) + toolbarGap
+                    let yPos = screenHeight - bottomOffset - contentHeight / 2
 
                     VStack(spacing: 0) {
                         toolbarContent
@@ -98,11 +103,18 @@ struct NoteEditorView: View {
                     .frame(width: geo.size.width)
                     .position(
                         x: geo.size.width / 2,
-                        y: geo.size.height - bottomOffset - contentHeight / 2
+                        y: yPos
                     )
                 }
             }
             .ignoresSafeArea()
+        }
+        .onChange(of: showingLocationPicker) { old, new in
+            if new {
+                preSheetKeyboardHeight = keyboardHeight
+            } else {
+                ignoreKeyboardUntil = Date().addingTimeInterval(0.5)
+            }
         }
         .onAppear {
             setupKeyboardObservers()
@@ -111,14 +123,11 @@ struct NoteEditorView: View {
                 viewModel = NoteEditorViewModel(note: note)
             }
 
-            // Extract location IDs directly from the attributed text content
-            // This ensures we use the same backing type as stored in the content
             if let vm = viewModel {
                 locationIDs = vm.locationIDsFromContent()
             }
         }
         .onChange(of: note.content) { _, _ in
-            // When content changes, update location IDs from content
             if let vm = viewModel {
                 locationIDs = vm.locationIDsFromContent()
             }
@@ -126,7 +135,11 @@ struct NoteEditorView: View {
         .onDisappear {
             removeKeyboardObservers()
         }
-        .sheet(isPresented: $showingLocationPicker) {
+        .sheet(isPresented: $showingLocationPicker, onDismiss: {
+            keyboardHeight = preSheetKeyboardHeight
+            preSheetKeyboardHeight = 0
+            isEditorFocused = true
+        }) {
             LocationPickerView { location in
                 viewModel?.insertLocation(location)
                 showingLocationPicker = false
@@ -150,33 +163,15 @@ struct NoteEditorView: View {
 
     // MARK: - Actions
 
-    private func log(_ message: String) {
-        if debug {
-            print("[NoteEditor] \(message)")
-        }
-    }
-
     private func handleToolbarModeChange(from oldValue: ToolbarMode, to newValue: ToolbarMode) {
-        log("toolbarMode: \(oldValue) -> \(newValue)")
-
         if newValue == .blockFormats {
-            // Set flag BEFORE dismissing keyboard so it's ready when keyboard hides
-            log("Setting showBlockFormatPicker = true")
             showBlockFormatPicker = true
-            // Now dismiss keyboard - grid will be revealed as it hides
             isEditorFocused = false
-            log("Set isEditorFocused = false")
         } else if oldValue == .blockFormats && newValue == .main {
-            // Closing block picker without selection - restore keyboard
-            log("Closing block picker, setting showBlockFormatPicker = false")
-            // Set keyboardHeight first to prevent toolbar flash during transition
             keyboardHeight = lastKeyboardHeight
             showBlockFormatPicker = false
             isEditorFocused = true
-            log("Set isEditorFocused = true to restore keyboard")
         } else if oldValue == .blockFormats && newValue == .textStyles {
-            // Switching from block picker to text styles
-            log("Switching to textStyles, setting showBlockFormatPicker = false")
             keyboardHeight = lastKeyboardHeight
             showBlockFormatPicker = false
             isEditorFocused = true
@@ -184,24 +179,16 @@ struct NoteEditorView: View {
     }
 
     private func handleBlockFormatSelection(_ format: BlockFormatType) {
-        log("Selected block format: \(format)")
         viewModel?.insertBlockFormat(format)
-        // Set keyboardHeight first to prevent toolbar flash during transition
         keyboardHeight = lastKeyboardHeight
         showBlockFormatPicker = false
         toolbarMode = .main
-        // Re-focus to bring keyboard back
         isEditorFocused = true
-        log("Block format applied, restored keyboard focus")
     }
 
     private func setupKeyboardObservers() {
-        guard !keyboardObserversSetUp else {
-            log("Keyboard observers already set up, skipping")
-            return
-        }
+        guard !keyboardObserversSetUp else { return }
         keyboardObserversSetUp = true
-        log("Setting up keyboard observers")
 
         NotificationCenter.default.addObserver(
             forName: UIResponder.keyboardWillShowNotification,
@@ -210,8 +197,17 @@ struct NoteEditorView: View {
         ) { notification in
             if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-                log("Keyboard will show, height: \(keyboardFrame.height), duration: \(duration)")
-                withAnimation(.easeOut(duration: duration)) {
+
+                // Skip notifications within the ignore window (after sheet dismiss)
+                if Date() < ignoreKeyboardUntil {
+                    return
+                }
+
+                if duration > 0 {
+                    withAnimation(.easeOut(duration: duration)) {
+                        keyboardHeight = keyboardFrame.height
+                    }
+                } else {
                     keyboardHeight = keyboardFrame.height
                 }
                 lastKeyboardHeight = keyboardFrame.height
@@ -224,7 +220,6 @@ struct NoteEditorView: View {
             queue: .main
         ) { notification in
             let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-            log("Keyboard will hide, showBlockFormatPicker: \(showBlockFormatPicker), duration: \(duration)")
             withAnimation(.easeOut(duration: duration)) {
                 keyboardHeight = 0
             }
@@ -261,7 +256,6 @@ struct NoteEditorView: View {
         }
         .padding(.horizontal, 4)
         .padding(.bottom, 13)
-        .onAppear { log("MainFormattingToolbar appeared") }
     }
 }
 
@@ -271,7 +265,6 @@ private struct GhostTextOverlay: View {
     let text: String
     let contentLineCount: Int
 
-    // Approximate line height for body font
     private let lineHeight: CGFloat = 22
 
     var body: some View {
