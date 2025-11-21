@@ -68,14 +68,26 @@ enum BlockFormatType: String, CaseIterable, Identifiable {
 struct BlockFormatPickerView: View {
     let onSelect: (BlockFormatType) -> Void
 
-    private let columns = [
-        GridItem(.flexible(), spacing: Theme.spacing),
-        GridItem(.flexible(), spacing: Theme.spacing)
-    ]
+    private let gridSpacing: CGFloat = 12
+
+    private var columns: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: gridSpacing),
+            GridItem(.flexible(), spacing: gridSpacing)
+        ]
+    }
 
     var body: some View {
-        VStack(spacing: Theme.spacing) {
-            LazyVGrid(columns: columns, spacing: Theme.spacing) {
+        VStack(alignment: .leading, spacing: Theme.smallSpacing) {
+            // Section header
+            Text("Insert")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(ThemeColors.secondaryLabel)
+                .padding(.horizontal, Theme.spacing)
+                .padding(.top, Theme.smallSpacing)
+
+            LazyVGrid(columns: columns, spacing: gridSpacing) {
                 ForEach(BlockFormatType.allCases) { format in
                     BlockFormatPill(format: format) {
                         onSelect(format)
@@ -83,7 +95,6 @@ struct BlockFormatPickerView: View {
                 }
             }
             .padding(.horizontal, Theme.spacing)
-            .padding(.top, Theme.spacing)
 
             Spacer()
         }
@@ -111,11 +122,13 @@ struct BlockFormatPill: View {
                 Text(format.label)
                     .font(.subheadline)
                     .fontWeight(.medium)
+                    .lineLimit(1)
 
                 Spacer()
             }
             .foregroundColor(ThemeColors.label)
-            .padding(.horizontal, Theme.spacing)
+            .padding(.leading, Theme.smallSpacing + 4)
+            .padding(.trailing, Theme.spacing)
             .padding(.vertical, Theme.smallSpacing + 4)
             .frame(maxWidth: .infinity)
             .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: Theme.pillCornerRadius))

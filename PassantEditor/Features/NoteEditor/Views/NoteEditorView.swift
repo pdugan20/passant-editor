@@ -76,27 +76,33 @@ struct NoteEditorView: View {
                 locations: locationIDs
             )
         )
-        .overlay(alignment: .bottom) {
-            // Show toolbar when keyboard is visible OR when block picker is shown
-            if keyboardHeight > 0 || showBlockFormatPicker {
-                let isGridVisible = showBlockFormatPicker && keyboardHeight == 0
+        .overlay {
+            GeometryReader { geo in
+                if keyboardHeight > 0 || showBlockFormatPicker {
+                    let gridHeight = showBlockFormatPicker ? lastKeyboardHeight : 0
+                    let contentHeight = toolbarHeight + gridHeight
+                    let toolbarGap: CGFloat = 4
+                    // Keep toolbar at consistent position - always toolbarGap above keyboard/grid area
+                    let bottomOffset = (showBlockFormatPicker ? 0 : keyboardHeight) + toolbarGap
 
-                ZStack(alignment: .bottom) {
-                    // Block format picker - revealed when keyboard hides
-                    BlockFormatPickerView { format in
-                        handleBlockFormatSelection(format)
+                    VStack(spacing: 0) {
+                        toolbarContent
+
+                        if showBlockFormatPicker {
+                            BlockFormatPickerView { format in
+                                handleBlockFormatSelection(format)
+                            }
+                            .frame(height: lastKeyboardHeight)
+                        }
                     }
-                    .frame(height: lastKeyboardHeight)
-                    .frame(maxWidth: .infinity)
-                    .opacity(isGridVisible ? 1 : 0)
-                    .allowsHitTesting(isGridVisible)
-                    .padding(.bottom, toolbarHeight + 16)
-
-                    // Toolbar always on top
-                    toolbarContent
+                    .frame(width: geo.size.width)
+                    .position(
+                        x: geo.size.width / 2,
+                        y: geo.size.height - bottomOffset - contentHeight / 2
+                    )
                 }
-                .ignoresSafeArea(.container, edges: .horizontal)
             }
+            .ignoresSafeArea()
         }
         .onAppear {
             setupKeyboardObservers()
@@ -163,12 +169,15 @@ struct NoteEditorView: View {
         } else if oldValue == .blockFormats && newValue == .main {
             // Closing block picker without selection - restore keyboard
             log("Closing block picker, setting showBlockFormatPicker = false")
+            // Set keyboardHeight first to prevent toolbar flash during transition
+            keyboardHeight = lastKeyboardHeight
             showBlockFormatPicker = false
             isEditorFocused = true
             log("Set isEditorFocused = true to restore keyboard")
         } else if oldValue == .blockFormats && newValue == .textStyles {
             // Switching from block picker to text styles
             log("Switching to textStyles, setting showBlockFormatPicker = false")
+            keyboardHeight = lastKeyboardHeight
             showBlockFormatPicker = false
             isEditorFocused = true
         }
@@ -177,6 +186,8 @@ struct NoteEditorView: View {
     private func handleBlockFormatSelection(_ format: BlockFormatType) {
         log("Selected block format: \(format)")
         viewModel?.insertBlockFormat(format)
+        // Set keyboardHeight first to prevent toolbar flash during transition
+        keyboardHeight = lastKeyboardHeight
         showBlockFormatPicker = false
         toolbarMode = .main
         // Re-focus to bring keyboard back
@@ -198,8 +209,11 @@ struct NoteEditorView: View {
             queue: .main
         ) { notification in
             if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                log("Keyboard will show, height: \(keyboardFrame.height)")
-                keyboardHeight = keyboardFrame.height
+                let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+                log("Keyboard will show, height: \(keyboardFrame.height), duration: \(duration)")
+                withAnimation(.easeOut(duration: duration)) {
+                    keyboardHeight = keyboardFrame.height
+                }
                 lastKeyboardHeight = keyboardFrame.height
             }
         }
@@ -208,10 +222,12 @@ struct NoteEditorView: View {
             forName: UIResponder.keyboardWillHideNotification,
             object: nil,
             queue: .main
-        ) { _ in
-            log("Keyboard will hide, showBlockFormatPicker: \(showBlockFormatPicker)")
-            // Always set keyboardHeight to 0 - showBlockFormatPicker controls picker visibility
-            keyboardHeight = 0
+        ) { notification in
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+            log("Keyboard will hide, showBlockFormatPicker: \(showBlockFormatPicker), duration: \(duration)")
+            withAnimation(.easeOut(duration: duration)) {
+                keyboardHeight = 0
+            }
         }
     }
 
