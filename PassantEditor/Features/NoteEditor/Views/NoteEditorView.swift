@@ -19,7 +19,7 @@ struct NoteEditorView: View {
     @FocusState private var isEditorFocused: Bool
     @Environment(\.modelContext) private var modelContext
 
-    private let toolbarHeight: CGFloat = 54
+    private let toolbarHeight: CGFloat = 49
     private let debug = true
 
     var body: some View {
@@ -235,15 +235,16 @@ struct NoteEditorView: View {
             toolbarMode: $toolbarMode,
             showingLocationPicker: $showingLocationPicker
         )
-        .frame(height: 54)
+        .padding(.horizontal, Theme.smallSpacing)
+        .frame(height: 49)
         .frame(maxWidth: .infinity)
         .background {
             Rectangle()
                 .fill(.clear)
                 .glassEffect()
         }
-        .padding(.horizontal, 8)
-        .padding(.bottom, 16)
+        .padding(.horizontal, 4)
+        .padding(.bottom, 13)
         .onAppear { log("MainFormattingToolbar appeared") }
     }
 }

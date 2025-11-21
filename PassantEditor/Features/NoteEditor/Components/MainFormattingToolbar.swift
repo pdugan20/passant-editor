@@ -25,7 +25,7 @@ struct MainFormattingToolbar: View {
     }
 
     var body: some View {
-        HStack(spacing: Theme.extraLargeSpacing) {
+        HStack(spacing: 6) {
             switch toolbarMode {
             case .main:
                 mainModeContent
@@ -34,9 +34,10 @@ struct MainFormattingToolbar: View {
             case .blockFormats:
                 blockFormatsModeContent
             }
+            Spacer()
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 58)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 49)
         .animation(Theme.smoothAnimation, value: toolbarMode)
     }
 
@@ -64,7 +65,7 @@ struct MainFormattingToolbar: View {
 
         // Location button
         FormatButton(
-            icon: "location.fill",
+            icon: "location",
             isActive: false
         ) {
             log("Location button tapped")
@@ -140,7 +141,7 @@ struct MainFormattingToolbar: View {
 
         // Location button
         FormatButton(
-            icon: "location.fill",
+            icon: "location",
             isActive: false
         ) {
             log("Location button tapped from block mode")
