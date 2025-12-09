@@ -134,7 +134,7 @@ enum SampleDataGenerator {
         content.append(belltownHeading)
 
         if let shortys = locations["Shorty's"] {
-            var item1 = AttributedString("• ")
+            var item1 = AttributedString("  •  ")
             var locationText = AttributedString("Shorty's")
             locationText.location = shortys.id
             item1.append(locationText)
@@ -143,7 +143,7 @@ enum SampleDataGenerator {
         }
 
         if let croc = locations["The Croc"] {
-            var item2 = AttributedString("• ")
+            var item2 = AttributedString("  •  ")
             var locationText = AttributedString("The Croc")
             locationText.location = croc.id
             item2.append(locationText)
@@ -157,7 +157,7 @@ enum SampleDataGenerator {
         content.append(subheading)
 
         if let unicorn = locations["Unicorn"] {
-            var item3 = AttributedString("• ")
+            var item3 = AttributedString("  •  ")
             var locationText = AttributedString("Unicorn")
             locationText.location = unicorn.id
             item3.append(locationText)
@@ -184,11 +184,11 @@ enum SampleDataGenerator {
 
         // Numbered list
         if let delancey = locations["Delancey"] {
-            var item1 = AttributedString("1. ")
+            var item1 = AttributedString("  1.  ")
             var locationText = AttributedString("Delancey")
             locationText.location = delancey.id
             item1.append(locationText)
-            item1.append(AttributedString("\n  Wood-fired Neapolitan pizza\n"))
+            item1.append(AttributedString(" - Wood-fired Neapolitan pizza\n"))
             content.append(item1)
         }
 
@@ -198,11 +198,11 @@ enum SampleDataGenerator {
         content.append(downtownHeading)
 
         if let serious = locations["Serious Pie"] {
-            var item2 = AttributedString("2. ")
+            var item2 = AttributedString("  2.  ")
             var locationText = AttributedString("Serious Pie")
             locationText.location = serious.id
             item2.append(locationText)
-            item2.append(AttributedString("\n  Tom Douglas's chanterelle mushroom pizza\n"))
+            item2.append(AttributedString(" - Tom Douglas's chanterelle mushroom pizza\n"))
             content.append(item2)
         }
 
@@ -212,11 +212,11 @@ enum SampleDataGenerator {
         content.append(heading2)
 
         if let dinos = locations["Dino's"] {
-            var item3 = AttributedString("3. ")
+            var item3 = AttributedString("  3.  ")
             var locationText = AttributedString("Dino's")
             locationText.location = dinos.id
             item3.append(locationText)
-            item3.append(AttributedString("\n  Late-night NY-style slices\n"))
+            item3.append(AttributedString(" - Late-night NY-style slices\n"))
             content.append(item3)
         }
 
@@ -251,20 +251,20 @@ enum SampleDataGenerator {
 
         // Bullet list
         if let victrola = locations["Victrola Coffee"] {
-            var item1 = AttributedString("• ")
+            var item1 = AttributedString("  •  ")
             var locationText = AttributedString("Victrola Coffee")
             locationText.location = victrola.id
             item1.append(locationText)
-            item1.append(AttributedString("\n  Light roasts and laptop-friendly\n"))
+            item1.append(AttributedString(" - Light roasts and laptop-friendly\n"))
             content.append(item1)
         }
 
         if let analog = locations["Analog Coffee"] {
-            var item2 = AttributedString("• ")
+            var item2 = AttributedString("  •  ")
             var locationText = AttributedString("Analog Coffee")
             locationText.location = analog.id
             item2.append(locationText)
-            item2.append(AttributedString("\n  Cozy spot with Bakery Nouveau pastries\n"))
+            item2.append(AttributedString(" - Cozy spot with Bakery Nouveau pastries\n"))
             content.append(item2)
         }
 
@@ -274,18 +274,22 @@ enum SampleDataGenerator {
         content.append(subheading2)
 
         if let elm = locations["Elm Coffee Roasters"] {
-            var item3 = AttributedString("• ")
+            var item3 = AttributedString("  •  ")
             var locationText = AttributedString("Elm Coffee Roasters")
             locationText.location = elm.id
             item3.append(locationText)
-            item3.append(AttributedString("\n  Rotating single origins and expert baristas\n"))
+            item3.append(AttributedString(" - Rotating single origins and expert baristas\n"))
             content.append(item3)
         }
 
         let note = Note(
             title: "Seattle Coffee Guide",
             content: content,
-            locations: [locations["Victrola Coffee"], locations["Analog Coffee"], locations["Elm Coffee Roasters"]].compactMap { $0 }
+            locations: [
+                locations["Victrola Coffee"],
+                locations["Analog Coffee"],
+                locations["Elm Coffee Roasters"]
+            ].compactMap { $0 }
         )
 
         return note

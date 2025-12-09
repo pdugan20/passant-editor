@@ -34,9 +34,6 @@ struct NoteEditorView: View {
                     .padding(.horizontal, Theme.spacing)
                     .padding(.top, Theme.spacing)
 
-                Divider()
-                    .padding(.vertical, 4)
-
                 // Content editor
                 if let viewModel = viewModel {
                     ZStack(alignment: .topLeading) {
@@ -79,7 +76,7 @@ struct NoteEditorView: View {
         )
         .overlay {
             GeometryReader { geo in
-                let screenHeight = UIScreen.main.bounds.height
+                let screenHeight = geo.size.height + geo.safeAreaInsets.top + geo.safeAreaInsets.bottom
 
                 // Show toolbar when: keyboard visible, block picker open, location sheet showing, OR transitioning from sheet
                 if keyboardHeight > 0 || showBlockFormatPicker || showingLocationPicker || preSheetKeyboardHeight > 0 {

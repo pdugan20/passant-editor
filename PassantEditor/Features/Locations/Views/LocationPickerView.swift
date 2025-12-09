@@ -20,6 +20,22 @@ struct LocationPickerView: View {
     private let referenceLatitude = 47.6097
     private let referenceLongitude = -122.3425
 
+    // Emoji pools by location type
+    private let emojiPools: [String: [String]] = [
+        "Bar": ["🍺", "🍻", "🥃", "🍸", "🎱"],
+        "Music Venue": ["🎵", "🎸", "🎤", "🎹", "🎷"],
+        "Restaurant": ["🍽️", "🍕", "🍝", "🥘", "🍜"],
+        "Cafe": ["☕", "🫖", "🥐", "🧁"]
+    ]
+    private let defaultEmojis = ["📍", "🏠", "🏢", "🗺️"]
+
+    private func emojiForLocation(_ location: Location) -> String {
+        let pool = location.type.flatMap { emojiPools[$0] } ?? defaultEmojis
+        // Use location name hash for consistent random selection
+        let index = abs(location.name.hashValue) % pool.count
+        return pool[index]
+    }
+
     var filteredLocations: [Location] {
         if searchText.isEmpty {
             return locations
@@ -58,22 +74,35 @@ struct LocationPickerView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(filteredLocations) { location in
+                ForEach(Array(filteredLocations.enumerated()), id: \.element.id) { index, location in
                     Button {
                         onSelect(location)
                         dismiss()
                     } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(location.name)
-                                .foregroundColor(ThemeColors.label)
+                        HStack(spacing: 12) {
+                            // Emoji icon box
+                            Text(emojiForLocation(location))
+                                .font(.title2)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(ThemeColors.secondaryBackground)
+                                )
 
-                            Text(formatLocationDetails(location))
-                                .font(.caption)
-                                .foregroundColor(ThemeColors.secondaryLabel)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(location.name)
+                                    .foregroundColor(ThemeColors.label)
+
+                                Text(formatLocationDetails(location))
+                                    .font(.caption)
+                                    .foregroundColor(ThemeColors.secondaryLabel)
+                            }
+                            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, Theme.smallSpacing)
+                        .padding(.vertical, 4)
                     }
+                    .listRowSeparator(index == 0 ? .hidden : .automatic, edges: .top)
                 }
 
                 // Quick add from search

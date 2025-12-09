@@ -65,11 +65,20 @@ struct MainFormattingToolbar: View {
 
         // Location button
         FormatButton(
-            icon: "location",
+            icon: "location.fill",
             isActive: false
         ) {
             log("Location button tapped")
             showingLocationPicker = true
+        }
+
+        // Photo button
+        FormatButton(
+            icon: "photo",
+            isActive: false
+        ) {
+            log("Photo button tapped")
+            // TODO: Implement photo picker
         }
     }
 
@@ -141,12 +150,22 @@ struct MainFormattingToolbar: View {
 
         // Location button
         FormatButton(
-            icon: "location",
+            icon: "location.fill",
             isActive: false
         ) {
             log("Location button tapped from block mode")
             showingLocationPicker = true
             toolbarMode = .main
+        }
+
+        // Photo button
+        FormatButton(
+            icon: "photo",
+            isActive: false
+        ) {
+            log("Photo button tapped from block mode")
+            toolbarMode = .main
+            // TODO: Implement photo picker
         }
     }
 }
